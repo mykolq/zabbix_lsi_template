@@ -7,7 +7,7 @@ Now it works only with zabbix 4.2
 ## Main features
 
 * Discovery of controllers, logical discs, physical discs, batteries (bbu an cv) without scripts on servers side (it uses parsing of json
-and java script on zabbix side)
+and java scripts on zabbix side)
 * Monitoring controllers, logical, physical discs, batteries
 * Useful with OS, where storcli works
 * Comfortable changing of time intervals by macroses.
@@ -15,6 +15,7 @@ and java script on zabbix side)
 ## Installation
 
 ### Zabbix server
+
 * Import template
 * Create and configure global macroses:
   * {$ADAP_DISCOVERY_PERIOD} - adapters discovery period. I think you can set it nearly 1d (daily)
@@ -32,4 +33,10 @@ and java script on zabbix side)
    * {$ADAP_THROTTLING_HB_PERIOD} - period of heartbit for throttling for adapter data
    * {$LD_THROTTLING_HB_PERIOD} - period of heartbit for throttling for logical discs data
    * {$PD_THROTTLING_HB_PERIOD} - period of heartbit for throttling for physical discs data
+  
+  ### Windows
+  
+  * Copy storcli utility in place where you store there things
+  * Copy lsi_win.conf in zabbix_agent configs folder
+  * Edit storcli paths in lsi_win.conf
   
