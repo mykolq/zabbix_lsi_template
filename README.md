@@ -36,7 +36,7 @@ and java scripts on zabbix side)
   
   ### Windows
   
-  * Copy storcli utility in place where you store there things
+  * Copy storcli utility in place where you store things like this
   * Copy lsi_win.conf in zabbix_agent configs folder
   * Edit storcli paths in lsi_win.conf
   
