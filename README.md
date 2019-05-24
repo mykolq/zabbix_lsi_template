@@ -6,7 +6,7 @@ Now it works only with zabbix 4.2
 
 ## Main features
 
-* Discovery of controllers, logical discs, physical discs, batteries (bbu an cv) without scripts on servers side (it uses parsing of json
+* Discovery of controllers, logical discs, physical discs, batteries (bbu and cv) without scripts on servers side (it uses parsing of json
 and java scripts on zabbix side)
 * Monitoring controllers, logical, physical discs, batteries
 * Useful with OS, where storcli works
