@@ -12,6 +12,10 @@ and java scripts on zabbix side)
 * Useful with OS, where storcli works
 * Comfortable changing of time intervals by macroses.
 
+## Plans
+* Test template with not only Windows and write instruction for other platforms
+* Make lld discovery for controllers with javascript (dell servers have some different json paths in storcli outputs).
+
 ## Installation
 
 ### Zabbix server
@@ -32,11 +36,11 @@ and java scripts on zabbix side)
  * Set template macroses:
    * {$ADAP_THROTTLING_HB_PERIOD} - period of heartbit for throttling for adapter data
    * {$LD_THROTTLING_HB_PERIOD} - period of heartbit for throttling for logical discs data
-   * {$PD_THROTTLING_HB_PERIOD} - period of heartbit for throttling for physical discs data
+   * {$PD_THROTTLING_HB_PERIOD} - period of heartbit for throttling for physical discs data.
   
   ### Windows
   
   * Copy storcli utility (you can use version in archive avago.7z) in place where you store things like this
   * Copy lsi_win.conf in zabbix_agent configs folder
-  * Edit storcli paths in lsi_win.conf
+  * Edit storcli paths in lsi_win.conf.
   
