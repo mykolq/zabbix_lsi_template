@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>4.2</version>
-    <date>2019-05-22T14:32:05Z</date>
+    <date>2019-05-28T12:49:52Z</date>
     <groups>
         <group>
             <name>LSI</name>
@@ -28,15 +28,15 @@
                     <name>LSI Internal items</name>
                 </application>
                 <application>
-                    <name>LSI Logical Disks</name>
+                    <name>LSI Logical disks</name>
                 </application>
                 <application>
-                    <name>LSI Physical discs</name>
+                    <name>LSI Physical disks</name>
                 </application>
             </applications>
             <items>
                 <item>
-                    <name>LSI All bbus info</name>
+                    <name>All bbus info</name>
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
@@ -95,7 +95,7 @@
                     <master_item/>
                 </item>
                 <item>
-                    <name>LSI All Ctls info</name>
+                    <name>All Ctls info</name>
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
@@ -154,7 +154,7 @@
                     <master_item/>
                 </item>
                 <item>
-                    <name>LSI All cvs info</name>
+                    <name>All cvs info</name>
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
@@ -213,7 +213,7 @@
                     <master_item/>
                 </item>
                 <item>
-                    <name>LSI All Lds info</name>
+                    <name>All Lds info</name>
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
@@ -272,7 +272,7 @@
                     <master_item/>
                 </item>
                 <item>
-                    <name>LSI All Pds info</name>
+                    <name>All Pds info</name>
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
@@ -1593,7 +1593,7 @@
                     <master_item/>
                 </discovery_rule>
                 <discovery_rule>
-                    <name>Logical discs discovery</name>
+                    <name>Logical disks discovery</name>
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
@@ -1656,7 +1656,7 @@
                             <inventory_link>0</inventory_link>
                             <applications>
                                 <application>
-                                    <name>LSI Logical Disks</name>
+                                    <name>LSI Logical disks</name>
                                 </application>
                             </applications>
                             <valuemap/>
@@ -1731,7 +1731,7 @@
                             <inventory_link>0</inventory_link>
                             <applications>
                                 <application>
-                                    <name>LSI Logical Disks</name>
+                                    <name>LSI Logical disks</name>
                                 </application>
                             </applications>
                             <valuemap/>
@@ -1801,7 +1801,7 @@ return value</params>
                             <expression>{Template LSI JSON discovery:lsi.ld.state.[&quot;{#LDID}&quot;].str(Optimal)}=0</expression>
                             <recovery_mode>1</recovery_mode>
                             <recovery_expression>{Template LSI JSON discovery:lsi.ld.state.[&quot;{#LDID}&quot;].str(Optimal)}=1</recovery_expression>
-                            <name>LSI logical disc &quot;{#LDNAME}&quot; (&quot;{#LDID}&quot;) state is &quot;{ITEM.LASTVALUE}&quot;</name>
+                            <name>LSI logical disk &quot;{#LDNAME}&quot; (&quot;{#LDID}&quot;) state is &quot;{ITEM.LASTVALUE}&quot;</name>
                             <correlation_mode>0</correlation_mode>
                             <correlation_tag/>
                             <url/>
@@ -1885,7 +1885,7 @@ return TxtValue</params>
                     <master_item/>
                 </discovery_rule>
                 <discovery_rule>
-                    <name>Physical discs discovery</name>
+                    <name>Physical disks discovery</name>
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
@@ -1948,7 +1948,7 @@ return TxtValue</params>
                             <inventory_link>0</inventory_link>
                             <applications>
                                 <application>
-                                    <name>LSI Physical discs</name>
+                                    <name>LSI Physical disks</name>
                                 </application>
                             </applications>
                             <valuemap/>
@@ -2023,7 +2023,7 @@ return TxtValue</params>
                             <inventory_link>0</inventory_link>
                             <applications>
                                 <application>
-                                    <name>LSI Physical discs</name>
+                                    <name>LSI Physical disks</name>
                                 </application>
                             </applications>
                             <valuemap/>
@@ -2098,7 +2098,7 @@ return TxtValue</params>
                             <inventory_link>0</inventory_link>
                             <applications>
                                 <application>
-                                    <name>LSI Physical discs</name>
+                                    <name>LSI Physical disks</name>
                                 </application>
                             </applications>
                             <valuemap/>
@@ -2173,7 +2173,7 @@ return TxtValue</params>
                             <inventory_link>0</inventory_link>
                             <applications>
                                 <application>
-                                    <name>LSI Physical discs</name>
+                                    <name>LSI Physical disks</name>
                                 </application>
                             </applications>
                             <valuemap/>
@@ -2248,7 +2248,7 @@ return TxtValue</params>
                             <inventory_link>0</inventory_link>
                             <applications>
                                 <application>
-                                    <name>LSI Physical discs</name>
+                                    <name>LSI Physical disks</name>
                                 </application>
                             </applications>
                             <valuemap/>
@@ -2323,7 +2323,7 @@ return TxtValue</params>
                             <inventory_link>0</inventory_link>
                             <applications>
                                 <application>
-                                    <name>LSI Physical discs</name>
+                                    <name>LSI Physical disks</name>
                                 </application>
                             </applications>
                             <valuemap/>
@@ -2398,7 +2398,7 @@ return TxtValue</params>
                             <inventory_link>0</inventory_link>
                             <applications>
                                 <application>
-                                    <name>LSI Physical discs</name>
+                                    <name>LSI Physical disks</name>
                                 </application>
                             </applications>
                             <valuemap/>
@@ -2474,7 +2474,7 @@ return value</params>
                             <expression>({Template LSI JSON discovery:lsi.pd.state.[&quot;{#PDID}&quot;].str(Unconfigured-Bad)}=1 or {Template LSI JSON discovery:lsi.pd.state.[&quot;{#PDID}&quot;].str(Unconfigured-Good)}=1 or {Template LSI JSON discovery:lsi.pd.state.[&quot;{#PDID}&quot;].str(Missing)}=1 or {Template LSI JSON discovery:lsi.pd.state.[&quot;{#PDID}&quot;].str(Offline)}=1 or {Template LSI JSON discovery:lsi.pd.state.[&quot;{#PDID}&quot;].str(Foreign)}=1) and {Template LSI JSON discovery:lsi.pd.state.[&quot;{#PDID}&quot;].diff()}=1 and {Template LSI JSON discovery:lsi.pd.state.[&quot;{#PDID}&quot;].strlen()}&gt;0</expression>
                             <recovery_mode>1</recovery_mode>
                             <recovery_expression>{Template LSI JSON discovery:lsi.pd.state.[&quot;{#PDID}&quot;].str(Unconfigured-Good)}=1 or {Template LSI JSON discovery:lsi.pd.state.[&quot;{#PDID}&quot;].str(Online)}=1</recovery_expression>
-                            <name>LSI physical disc &quot;{#PDNAME}&quot; is &quot;{ITEM.LASTVALUE}&quot;</name>
+                            <name>LSI physical disk &quot;{#PDNAME}&quot; is &quot;{ITEM.LASTVALUE}&quot;</name>
                             <correlation_mode>0</correlation_mode>
                             <correlation_tag/>
                             <url/>
@@ -2482,7 +2482,7 @@ return value</params>
                             <priority>4</priority>
                             <description/>
                             <type>0</type>
-                            <manual_close>0</manual_close>
+                            <manual_close>1</manual_close>
                             <dependencies/>
                             <tags>
                                 <tag>
@@ -2495,7 +2495,7 @@ return value</params>
                             <expression>{Template LSI JSON discovery:lsi.pd.predicterrcount.[&quot;{#PDID}&quot;].last()}&gt;0</expression>
                             <recovery_mode>1</recovery_mode>
                             <recovery_expression>{Template LSI JSON discovery:lsi.pd.predicterrcount.[&quot;{#PDID}&quot;].last()}=0</recovery_expression>
-                            <name>LSI physical disc &quot;{#PDNAME}&quot; media error count is &quot;{ITEM.LASTVALUE}&quot;</name>
+                            <name>LSI physical disk &quot;{#PDNAME}&quot; media error count is &quot;{ITEM.LASTVALUE}&quot;</name>
                             <correlation_mode>0</correlation_mode>
                             <correlation_tag/>
                             <url/>
@@ -2503,7 +2503,7 @@ return value</params>
                             <priority>2</priority>
                             <description/>
                             <type>0</type>
-                            <manual_close>0</manual_close>
+                            <manual_close>1</manual_close>
                             <dependencies/>
                             <tags/>
                         </trigger_prototype>
@@ -2511,7 +2511,7 @@ return value</params>
                             <expression>{Template LSI JSON discovery:lsi.pd.predicterrcount.[&quot;{#PDID}&quot;].last()}&gt;0 and {Template LSI JSON discovery:lsi.pd.predicterrcount.[&quot;{#PDID}&quot;].diff()}=1</expression>
                             <recovery_mode>1</recovery_mode>
                             <recovery_expression>{Template LSI JSON discovery:lsi.pd.predicterrcount.[&quot;{#PDID}&quot;].last()}=0</recovery_expression>
-                            <name>LSI physical disc &quot;{#PDNAME}&quot; media error count is &quot;{ITEM.LASTVALUE}&quot;. Growing up</name>
+                            <name>LSI physical disk &quot;{#PDNAME}&quot; media error count is &quot;{ITEM.LASTVALUE}&quot;. Growing up</name>
                             <correlation_mode>0</correlation_mode>
                             <correlation_tag/>
                             <url/>
@@ -2519,7 +2519,7 @@ return value</params>
                             <priority>2</priority>
                             <description/>
                             <type>0</type>
-                            <manual_close>0</manual_close>
+                            <manual_close>1</manual_close>
                             <dependencies/>
                             <tags/>
                         </trigger_prototype>
@@ -2527,7 +2527,7 @@ return value</params>
                             <expression>{Template LSI JSON discovery:lsi.pd.merrcount.[&quot;{#PDID}&quot;].last()}&gt;0</expression>
                             <recovery_mode>1</recovery_mode>
                             <recovery_expression>{Template LSI JSON discovery:lsi.pd.merrcount.[&quot;{#PDID}&quot;].last()}=0</recovery_expression>
-                            <name>LSI physical disc &quot;{#PDNAME}&quot; media error count is &quot;{ITEM.LASTVALUE}&quot;. No spare sectors now for remapping</name>
+                            <name>LSI physical disk &quot;{#PDNAME}&quot; media error count is &quot;{ITEM.LASTVALUE}&quot;. No spare sectors now for remapping</name>
                             <correlation_mode>0</correlation_mode>
                             <correlation_tag/>
                             <url/>
@@ -2535,7 +2535,7 @@ return value</params>
                             <priority>3</priority>
                             <description/>
                             <type>0</type>
-                            <manual_close>0</manual_close>
+                            <manual_close>1</manual_close>
                             <dependencies/>
                             <tags/>
                         </trigger_prototype>
@@ -2543,7 +2543,7 @@ return value</params>
                             <expression>{Template LSI JSON discovery:lsi.pd.sn.[&quot;{#PDID}&quot;].diff()}=1 and {Template LSI JSON discovery:lsi.pd.sn.[&quot;{#PDID}&quot;].strlen(#2)}&gt;0</expression>
                             <recovery_mode>2</recovery_mode>
                             <recovery_expression/>
-                            <name>LSI physical disc &quot;{#PDNAME}&quot; was replaced by sn  &quot;{ITEM.LASTVALUE1}&quot;.  Previous sn: &quot;{ITEM.LASTVALUE2}&quot;</name>
+                            <name>LSI physical disk &quot;{#PDNAME}&quot; was replaced by sn  &quot;{ITEM.LASTVALUE1}&quot;.  Previous sn: &quot;{ITEM.LASTVALUE2}&quot;</name>
                             <correlation_mode>0</correlation_mode>
                             <correlation_tag/>
                             <url/>
@@ -2564,7 +2564,7 @@ return value</params>
                             <expression>{Template LSI JSON discovery:lsi.pd.smartflag.[&quot;{#PDID}&quot;].str(Yes)}=1</expression>
                             <recovery_mode>1</recovery_mode>
                             <recovery_expression>{Template LSI JSON discovery:lsi.pd.smartflag.[&quot;{#PDID}&quot;].str(No)}=1</recovery_expression>
-                            <name>LSI physical disc: SMART flag was raised up on &quot;{#PDNAME}&quot;</name>
+                            <name>LSI physical disk: SMART flag was raised up on &quot;{#PDNAME}&quot;</name>
                             <correlation_mode>0</correlation_mode>
                             <correlation_tag/>
                             <url/>
@@ -2572,7 +2572,7 @@ return value</params>
                             <priority>3</priority>
                             <description/>
                             <type>0</type>
-                            <manual_close>0</manual_close>
+                            <manual_close>1</manual_close>
                             <dependencies/>
                             <tags>
                                 <tag>
