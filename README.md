@@ -39,7 +39,7 @@ and java scripts on zabbix side)
   
   ### Windows
   
-  * Copy storcli utility (you can use version in archive avago.7z) in place where you store things like this
+  * Copy storcli utility (you can use version in diskutils_windows.zip) in place where you store things like this
   * Copy lsi_win.conf in zabbix_agent configs folder
   * Edit storcli paths in lsi_win.conf.
   
