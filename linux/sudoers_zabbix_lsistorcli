@@ -1,0 +1,4 @@
+Cmnd_Alias LSISTORCLI=/opt/MegaRAID/storcli/storcli64 /call show all j,/opt/MegaRAID/storcli/storcli64 /call/vall show all j,/opt/MegaRAID/storcli/storcli64 /call/eall/sall show all j,/opt/MegaRAID/storcli/storcli64 show all j,/opt/MegaRAID/storcli/storcli64 /call/cv show all j,/opt/MegaRAID/storcli/storcli64 /call/bbu show all j
+zabbix ALL= (root) NOPASSWD: LSISTORCLI
+Defaults!LSISTORCLI !logfile, !syslog, !pam_session
+
