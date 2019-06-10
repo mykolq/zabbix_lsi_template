@@ -43,3 +43,8 @@ and java scripts on zabbix side)
   * Copy lsi_raid_win.conf in zabbix_agent configs folder
   * Edit storcli paths in lsi_raid_win.conf.
   
+ ### Linux (tested with Centos 7 with disabled SELinux)
+  
+  * Install storcli (you can use storcli-007.0916.0000.0000-1.noarch.rpm or storcli_007.0916.0000.0000_all.deb)
+  * Copy lsi_raid_linux.conf in zabbix_agent configs folder (by default /etc/zabbix/zabbix_agentd.d/)
+  * Check and edit storcli paths in lsi_raid_linux.conf.
