@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>4.2</version>
-    <date>2019-05-28T12:49:52Z</date>
+    <date>2019-06-13T09:57:28Z</date>
     <groups>
         <group>
             <name>LSI</name>
@@ -1459,10 +1459,10 @@
                             <tags/>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>({Template LSI JSON discovery:lsi.ctl.cvreplace.[&quot;{#CTLID}&quot;].str(No)}=0 and {Template LSI JSON discovery:lsi.ctl.cvreplace.[&quot;{#CTLID}&quot;].strlen()}&gt;0) or ({Template LSI JSON discovery:lsi.ctl.bbureplace.[&quot;{#CTLID}&quot;].str(No)}=0 and {Template LSI JSON discovery:lsi.ctl.bbureplace.[&quot;{#CTLID}&quot;].strlen()}&gt;0)</expression>
+                            <expression>({Template LSI JSON discovery:lsi.ctl.bbureplace.[&quot;{#CTLID}&quot;].str(No)}=0 and {Template LSI JSON discovery:lsi.ctl.bbureplace.[&quot;{#CTLID}&quot;].strlen()}&gt;0)</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
-                            <name>LSI controller {#CTLID} battery is need to be replaced</name>
+                            <name>LSI controller {#CTLID} bbu battery is need to be replaced</name>
                             <correlation_mode>0</correlation_mode>
                             <correlation_tag/>
                             <url/>
@@ -1475,10 +1475,10 @@
                             <tags/>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>({Template LSI JSON discovery:lsi.ctl.bbustate.[&quot;{#CTLID}&quot;].str(Optimal)}=0 and {Template LSI JSON discovery:lsi.ctl.bbustate.[&quot;{#CTLID}&quot;].strlen()}&gt;0) or ({Template LSI JSON discovery:lsi.ctl.cvstate.[&quot;{#CTLID}&quot;].str(Optimal)}=0 and {Template LSI JSON discovery:lsi.ctl.cvstate.[&quot;{#CTLID}&quot;].strlen()}&gt;0)</expression>
+                            <expression>({Template LSI JSON discovery:lsi.ctl.bbustate.[&quot;{#CTLID}&quot;].str(Optimal)}=0 and {Template LSI JSON discovery:lsi.ctl.bbustate.[&quot;{#CTLID}&quot;].strlen()}&gt;0)</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
-                            <name>LSI controller {#CTLID} battery state is {ITEM.LASTVALUE}</name>
+                            <name>LSI controller {#CTLID} bbu battery state is {ITEM.LASTVALUE}</name>
                             <correlation_mode>0</correlation_mode>
                             <correlation_tag/>
                             <url/>
@@ -1491,10 +1491,58 @@
                             <tags/>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>({Template LSI JSON discovery:lsi.ctl.bbusn.[&quot;{#CTLID}&quot;].diff()}=1 and {Template LSI JSON discovery:lsi.ctl.bbusn.[&quot;{#CTLID}&quot;].strlen()}&gt;0) or ({Template LSI JSON discovery:lsi.ctl.cvsn.[&quot;{#CTLID}&quot;].diff()}=1 and {Template LSI JSON discovery:lsi.ctl.cvsn.[&quot;{#CTLID}&quot;].strlen()}&gt;0)</expression>
+                            <expression>({Template LSI JSON discovery:lsi.ctl.bbusn.[&quot;{#CTLID}&quot;].diff()}=1 and {Template LSI JSON discovery:lsi.ctl.bbusn.[&quot;{#CTLID}&quot;].strlen()}&gt;0)</expression>
                             <recovery_mode>2</recovery_mode>
                             <recovery_expression/>
-                            <name>LSI controller {#CTLID} battery was replaced</name>
+                            <name>LSI controller {#CTLID} bbu battery was replaced</name>
+                            <correlation_mode>0</correlation_mode>
+                            <correlation_tag/>
+                            <url/>
+                            <status>0</status>
+                            <priority>1</priority>
+                            <description/>
+                            <type>0</type>
+                            <manual_close>1</manual_close>
+                            <dependencies/>
+                            <tags/>
+                        </trigger_prototype>
+                        <trigger_prototype>
+                            <expression>({Template LSI JSON discovery:lsi.ctl.cvreplace.[&quot;{#CTLID}&quot;].str(No)}=0 and {Template LSI JSON discovery:lsi.ctl.cvreplace.[&quot;{#CTLID}&quot;].strlen()}&gt;0)</expression>
+                            <recovery_mode>0</recovery_mode>
+                            <recovery_expression/>
+                            <name>LSI controller {#CTLID} cachevault battery is need to be replaced</name>
+                            <correlation_mode>0</correlation_mode>
+                            <correlation_tag/>
+                            <url/>
+                            <status>0</status>
+                            <priority>3</priority>
+                            <description/>
+                            <type>0</type>
+                            <manual_close>1</manual_close>
+                            <dependencies/>
+                            <tags/>
+                        </trigger_prototype>
+                        <trigger_prototype>
+                            <expression>({Template LSI JSON discovery:lsi.ctl.cvstate.[&quot;{#CTLID}&quot;].str(Optimal)}=0 and {Template LSI JSON discovery:lsi.ctl.cvstate.[&quot;{#CTLID}&quot;].strlen()}&gt;0)</expression>
+                            <recovery_mode>0</recovery_mode>
+                            <recovery_expression/>
+                            <name>LSI controller {#CTLID} cachevault battery state is {ITEM.LASTVALUE}</name>
+                            <correlation_mode>0</correlation_mode>
+                            <correlation_tag/>
+                            <url/>
+                            <status>0</status>
+                            <priority>3</priority>
+                            <description/>
+                            <type>0</type>
+                            <manual_close>1</manual_close>
+                            <dependencies/>
+                            <tags/>
+                        </trigger_prototype>
+                        <trigger_prototype>
+                            <expression>({Template LSI JSON discovery:lsi.ctl.cvsn.[&quot;{#CTLID}&quot;].diff()}=1 and {Template LSI JSON discovery:lsi.ctl.cvsn.[&quot;{#CTLID}&quot;].strlen()}&gt;0)</expression>
+                            <recovery_mode>2</recovery_mode>
+                            <recovery_expression/>
+                            <name>LSI controller {#CTLID} cachevault battery was replaced</name>
                             <correlation_mode>0</correlation_mode>
                             <correlation_tag/>
                             <url/>
