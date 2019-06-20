@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>4.2</version>
-    <date>2019-06-20T11:55:59Z</date>
+    <date>2019-06-20T13:36:10Z</date>
     <groups>
         <group>
             <name>LSI</name>
@@ -2540,10 +2540,26 @@ return value</params>
                             </tags>
                         </trigger_prototype>
                         <trigger_prototype>
+                            <expression>{Template LSI JSON discovery:lsi.pd.merrcount.[&quot;{#PDID}&quot;].last()}&gt;0</expression>
+                            <recovery_mode>1</recovery_mode>
+                            <recovery_expression>{Template LSI JSON discovery:lsi.pd.merrcount.[&quot;{#PDID}&quot;].last()}=0</recovery_expression>
+                            <name>LSI physical disk &quot;{#PDID}&quot; media error count is &quot;{ITEM.LASTVALUE}&quot;</name>
+                            <correlation_mode>0</correlation_mode>
+                            <correlation_tag/>
+                            <url/>
+                            <status>0</status>
+                            <priority>3</priority>
+                            <description/>
+                            <type>0</type>
+                            <manual_close>1</manual_close>
+                            <dependencies/>
+                            <tags/>
+                        </trigger_prototype>
+                        <trigger_prototype>
                             <expression>{Template LSI JSON discovery:lsi.pd.predicterrcount.[&quot;{#PDID}&quot;].last()}&gt;0</expression>
                             <recovery_mode>1</recovery_mode>
                             <recovery_expression>{Template LSI JSON discovery:lsi.pd.predicterrcount.[&quot;{#PDID}&quot;].last()}=0</recovery_expression>
-                            <name>LSI physical disk &quot;{#PDID}&quot; media error count is &quot;{ITEM.LASTVALUE}&quot;</name>
+                            <name>LSI physical disk &quot;{#PDID}&quot; predictive failure count is &quot;{ITEM.LASTVALUE}&quot;</name>
                             <correlation_mode>0</correlation_mode>
                             <correlation_tag/>
                             <url/>
@@ -2559,7 +2575,7 @@ return value</params>
                             <expression>{Template LSI JSON discovery:lsi.pd.predicterrcount.[&quot;{#PDID}&quot;].last()}&gt;0 and {Template LSI JSON discovery:lsi.pd.predicterrcount.[&quot;{#PDID}&quot;].diff()}=1</expression>
                             <recovery_mode>1</recovery_mode>
                             <recovery_expression>{Template LSI JSON discovery:lsi.pd.predicterrcount.[&quot;{#PDID}&quot;].last()}=0</recovery_expression>
-                            <name>LSI physical disk &quot;{#PDID}&quot; media error count is &quot;{ITEM.LASTVALUE}&quot;. Growing up</name>
+                            <name>LSI physical disk &quot;{#PDID}&quot; predictive failure count is &quot;{ITEM.LASTVALUE}&quot;. Growing up</name>
                             <correlation_mode>0</correlation_mode>
                             <correlation_tag/>
                             <url/>
@@ -2568,23 +2584,13 @@ return value</params>
                             <description/>
                             <type>0</type>
                             <manual_close>1</manual_close>
-                            <dependencies/>
-                            <tags/>
-                        </trigger_prototype>
-                        <trigger_prototype>
-                            <expression>{Template LSI JSON discovery:lsi.pd.merrcount.[&quot;{#PDID}&quot;].last()}&gt;0</expression>
-                            <recovery_mode>1</recovery_mode>
-                            <recovery_expression>{Template LSI JSON discovery:lsi.pd.merrcount.[&quot;{#PDID}&quot;].last()}=0</recovery_expression>
-                            <name>LSI physical disk &quot;{#PDID}&quot; media error count is &quot;{ITEM.LASTVALUE}&quot;. No spare sectors now for remapping</name>
-                            <correlation_mode>0</correlation_mode>
-                            <correlation_tag/>
-                            <url/>
-                            <status>0</status>
-                            <priority>3</priority>
-                            <description/>
-                            <type>0</type>
-                            <manual_close>1</manual_close>
-                            <dependencies/>
+                            <dependencies>
+                                <dependency>
+                                    <name>LSI physical disk &quot;{#PDID}&quot; predictive failure count is &quot;{ITEM.LASTVALUE}&quot;</name>
+                                    <expression>{Template LSI JSON discovery:lsi.pd.predicterrcount.[&quot;{#PDID}&quot;].last()}&gt;0</expression>
+                                    <recovery_expression>{Template LSI JSON discovery:lsi.pd.predicterrcount.[&quot;{#PDID}&quot;].last()}=0</recovery_expression>
+                                </dependency>
+                            </dependencies>
                             <tags/>
                         </trigger_prototype>
                         <trigger_prototype>
