@@ -14,7 +14,8 @@ and java scripts on zabbix side)
 
 ## Plans
 * Test template with not only Windows and write instruction for other platforms
-* Make lld discovery for controllers with javascript (dell servers have some different json paths in storcli outputs).
+* ~~Make lld discovery for controllers with javascript (dell servers have some different json paths in storcli outputs).~~ Not actually
+* Make PD state trigger controlable by macroses like PD_warning_state
 
 ## Installation
 
