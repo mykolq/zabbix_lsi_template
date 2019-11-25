@@ -2710,6 +2710,18 @@ return TxtValue</params>
             </discovery_rules>
             <httptests/>
             <macros>
+               <macro>
+                    <macro>{$ADAP_DISCOVERY_PERIOD}</macro>
+                    <value>1d</value>
+                </macro>
+                <macro>
+                    <macro>{$ADAP_HISTORY_PERIOD}</macro>
+                    <value>30d</value>
+                </macro>
+                <macro>
+                    <macro>{$ADAP_REQUEST_PERIOD}</macro>
+                    <value>1h</value>
+                </macro>
                 <macro>
                     <macro>{$ADAP_THROTTLING_HB_PERIOD}</macro>
                     <value>10800</value>
@@ -2719,14 +2731,42 @@ return TxtValue</params>
                     <value>0</value>
                 </macro>
                 <macro>
+                    <macro>{$LD_DISCOVERY_PERIOD}</macro>
+                    <value>6h</value>
+                </macro>
+                <macro>
+                    <macro>{$LD_HISTORY_PERIOD}</macro>
+                    <value>30d</value>
+                </macro>
+                <macro>
+                    <macro>{$LD_REQUEST_PERIOD}</macro>
+                    <value>5m</value>
+                </macro>
+                <macro>
                     <macro>{$LD_THROTTLING_HB_PERIOD}</macro>
                     <value>10800</value>
+                </macro>
+                <macro>
+                    <macro>{$PD_DISCOVERY_PERIOD}</macro>
+                    <value>30m</value>
+                </macro>
+                <macro>
+                    <macro>{$PD_HISTORY_PERIOD}</macro>
+                    <value>30d</value>
+                </macro>
+                <macro>
+                    <macro>{$PD_REQUEST_PERIOD}</macro>
+                    <value>5m</value>
                 </macro>
                 <macro>
                     <macro>{$PD_THROTTLING_HB_PERIOD}</macro>
                     <value>10800</value>
                 </macro>
-            </macros>
+                <macro>
+                    <macro>{$PD_TRENDS_PERIOD}</macro>
+                    <value>365d</value>
+                </macro>
+	    </macros>
             <templates/>
             <screens/>
             <tags/>
