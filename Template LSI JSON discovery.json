@@ -1,0 +1,1772 @@
+{
+    "zabbix_export": {
+        "version": "5.4",
+        "date": "2021-11-30T09:35:19Z",
+        "groups": [
+            {
+                "uuid": "040d20d408f447c4a041176b8604e5e9",
+                "name": "Templates/storage controllers"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "fc13974253984b078a28424cc18c93fb",
+                "template": "Template LSI_Perc_Lenovo json discovery",
+                "name": "Template LSI_Perc_Lenovo json discovery",
+                "groups": [
+                    {
+                        "name": "Templates/storage controllers"
+                    }
+                ],
+                "items": [
+                    {
+                        "uuid": "bc8fa306cbcf4880ba597c3da6e0fd84",
+                        "name": "All Ctls and LDs Info",
+                        "key": "lsi.ctlsinfo[{$LSI_CLI}]",
+                        "delay": "{$ADAP_REQUEST_PERIOD}",
+                        "history": "0",
+                        "trends": "0",
+                        "value_type": "TEXT",
+                        "preprocessing": [
+                            {
+                                "type": "CHECK_REGEX_ERROR",
+                                "parameters": [
+                                    "No Controller found",
+                                    "\\0"
+                                ],
+                                "error_handler": "CUSTOM_VALUE",
+                                "error_handler_params": "No Controller found"
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "LSI Internal items"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "c5d230f17abd494cb45f8af632053fc1",
+                        "name": "PD show all command",
+                        "type": "DEPENDENT",
+                        "key": "lsi.pd.command",
+                        "delay": "0",
+                        "history": "{$DEFAULT_HISTORY_PERIOD}",
+                        "trends": "0",
+                        "value_type": "TEXT",
+                        "preprocessing": [
+                            {
+                                "type": "JAVASCRIPT",
+                                "parameters": [
+                                    "if (value !== 'No Controller found'){\nvar firstAnyEid = (value.match(/(\"EID:Slt\"\\s*:\\s\")(.*):(.*)/))[0].match(/(\"EID:Slt\"\\s*:\\s\")(.*):(.*)/)[2];\nvar PDGetLine = (/\\d{1,}/.test(firstAnyEid)) ? '/call/eall/sall':\n'/call/sall';\nreturn PDGetLine;\n}\nelse return value;"
+                                ]
+                            },
+                            {
+                                "type": "DISCARD_UNCHANGED",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "lsi.ctlsinfo[{$LSI_CLI}]"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "LSI Internal items"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "c3f67cb97ae64fdf912c3361849080de",
+                                "expression": "find(/Template LSI_Perc_Lenovo json discovery/lsi.pd.command,,,\"No Controller found\")=1",
+                                "name": "LSI: no controllers found with ''{$LSI_CLI}\"",
+                                "priority": "INFO",
+                                "manual_close": "YES",
+                                "tags": [
+                                    {
+                                        "tag": "TEST",
+                                        "value": "YES"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "87577927a4354509870c454e162ef60f",
+                                "expression": "find(/Template LSI_Perc_Lenovo json discovery/lsi.pd.command,,\"iregexp\",\"{$LSI_PD_COMMAND}\")=0 and find(/Template LSI_Perc_Lenovo json discovery/lsi.pd.command,,\"iregexp\",\"No Controller found\")=0",
+                                "name": "LSI controller is needed \"{ITEM.VALUE}\" instead of \"{$LSI_PD_COMMAND}\" parameter for getting PDs info",
+                                "description": "Checking /call show all output and have to change default LSI_PD_COMMAND macro value",
+                                "manual_close": "YES",
+                                "tags": [
+                                    {
+                                        "tag": "ACTION",
+                                        "value": "Change macro value on host"
+                                    },
+                                    {
+                                        "tag": "MACRONAME",
+                                        "value": "LSI_PD_COMMAND"
+                                    },
+                                    {
+                                        "tag": "MACROVALUE",
+                                        "value": "{ITEM.VALUE}"
+                                    },
+                                    {
+                                        "tag": "NOTIFY",
+                                        "value": "NO"
+                                    },
+                                    {
+                                        "tag": "SOURCE",
+                                        "value": "LSI PD getting param"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "72a9a771065e445c95b20cb141af6f0b",
+                        "name": "All Pds info",
+                        "key": "lsi.pdsinfo[{$LSI_CLI},{$LSI_PD_COMMAND}]",
+                        "delay": "{$PD_REQUEST_PERIOD}",
+                        "history": "0",
+                        "trends": "0",
+                        "value_type": "TEXT",
+                        "preprocessing": [
+                            {
+                                "type": "CHECK_REGEX_ERROR",
+                                "parameters": [
+                                    "No Controller found",
+                                    "\\0"
+                                ],
+                                "error_handler": "CUSTOM_VALUE",
+                                "error_handler_params": "No Controller found"
+                            }
+                        ],
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "LSI Internal items"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "740eb1cb44024a1f82d2ab39eab8dc68",
+                        "name": "All Pds LLD info",
+                        "type": "DEPENDENT",
+                        "key": "lsi.SMART.lld",
+                        "delay": "0",
+                        "history": "{$DEFAULT_HISTORY_PERIOD}",
+                        "trends": "0",
+                        "value_type": "TEXT",
+                        "description": "test",
+                        "preprocessing": [
+                            {
+                                "type": "NOT_MATCHES_REGEX",
+                                "parameters": [
+                                    "No Controller found"
+                                ]
+                            },
+                            {
+                                "type": "JAVASCRIPT",
+                                "parameters": [
+                                    "var JsonValue = JSON.parse(value);\nvar prejson = [];\nfor (var i = 0; i < (JsonValue.Controllers).length; i++) {\nvar ResponseStatus=JsonValue.Controllers[i]['Command Status']['Status'];\nif (ResponseStatus.match(/Success/g)) {\nvar ResponseData = JsonValue.Controllers[i]['Response Data'];\nfor (var key in ResponseData) {\n\tvar KeySplitted = key.split(' ');\n\tvar NeedData = {};\n\tif (KeySplitted.length === 2) {\n\t\t NeedData['SLOT'] =  KeySplitted[1];\n\t\t NeedData['Controller number'] =  i;\n\t\t NeedData['slotname_source'] = 'LSI';\n\t\t NeedData['Serial Number'] = ResponseData[key +  \" - Detailed Information\"][key +  \" Device attributes\"]['SN'];\n\t\t NeedData['Size'] = ResponseData[key][0]['Size'];\n\t\t NeedData['Type'] = ResponseData[key][0]['Intf'] + \" \" + ResponseData[key][0]['Med'];\n\t\t NeedData['Disk group'] = ResponseData[key][0]['DG'];\n\t\t NeedData['Model'] = ResponseData[key][0]['Model'];\n\t\t prejson.push(JSON.stringify(NeedData,null,space=0));\n\t}\n\telse\n\t{\n\t}\n}\n}\nelse{\nprejson.push.JsonValue.Controllers[i]['Description'];\n}\n}\nreturn(\"[\" + prejson + \"]\");"
+                                ]
+                            },
+                            {
+                                "type": "DISCARD_UNCHANGED",
+                                "parameters": [
+                                    ""
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "lsi.pdsinfo[{$LSI_CLI},{$LSI_PD_COMMAND}]"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "LSI Internal items"
+                            }
+                        ]
+                    }
+                ],
+                "discovery_rules": [
+                    {
+                        "uuid": "2771a238ad9841a0be217eb41fa2b1b0",
+                        "name": "Controllers discovery",
+                        "type": "DEPENDENT",
+                        "key": "lsi.ctllld",
+                        "delay": "0",
+                        "lifetime": "1d",
+                        "item_prototypes": [
+                            {
+                                "uuid": "7e7b5a53171e4ab196156e47e01d565f",
+                                "name": "Controller \"{#CTLID}\" all battery (BBU) info",
+                                "key": "lsi.batteryinfo[{$LSI_CLI},{#BATTERY_CMD},BBU]",
+                                "delay": "{$ADAP_BATTERY_REQUEST_PERIOD}",
+                                "history": "0",
+                                "trends": "0",
+                                "value_type": "TEXT",
+                                "preprocessing": [
+                                    {
+                                        "type": "CHECK_REGEX_ERROR",
+                                        "parameters": [
+                                            "sudo: no password was provided",
+                                            "\\0"
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Internal items"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "31b7a3c31b81462392d7ac91d7c16751",
+                                "name": "Controller \"{#CTLID}\" all battery (cache vault) info",
+                                "key": "lsi.batteryinfo[{$LSI_CLI},{#BATTERY_CMD},CV]",
+                                "delay": "{$ADAP_BATTERY_REQUEST_PERIOD}",
+                                "history": "0",
+                                "trends": "0",
+                                "value_type": "TEXT",
+                                "preprocessing": [
+                                    {
+                                        "type": "CHECK_REGEX_ERROR",
+                                        "parameters": [
+                                            "sudo: no password was provided",
+                                            "\\0"
+                                        ]
+                                    }
+                                ],
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Internal items"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "bc4010a7a5d74c53b21f261cf7dbdd54",
+                                "name": "Controller \"{#CTLID}\" battery (BBU) low charge level",
+                                "type": "DEPENDENT",
+                                "key": "lsi.ctl.bbu.lowcharge.[\"{#CTLID}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "TEXT",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Controllers'][{#CTLID}]['Response Data']['BBU_Firmware_Status'][?(@.Property==\"Remaining Capacity Low\")]['Value'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.batteryinfo[{$LSI_CLI},{#BATTERY_CMD},BBU]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI battery"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "e03baa901aa846cbaf1a3ddc858f0aa2",
+                                        "expression": "find(/Template LSI_Perc_Lenovo json discovery/lsi.ctl.bbu.lowcharge.[\"{#CTLID}\"],,\"like\",\"No\")=0",
+                                        "name": "LSI: controller \"{#CTLID}\" battery (BBU) charge level is low",
+                                        "priority": "AVERAGE",
+                                        "manual_close": "YES",
+                                        "tags": [
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI storage controller battery charge level"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "e17c5373dc2e40f2b234d612dca9f1fc",
+                                "name": "Controller \"{#CTLID}\" battery (BBU) need to replace",
+                                "type": "DEPENDENT",
+                                "key": "lsi.ctl.bbu.replace.[\"{#CTLID}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "TEXT",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Controllers'][{#CTLID}]['Response Data']['BBU_Firmware_Status'][?(@.Property==\"Replacement required\")]['Value'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.batteryinfo[{$LSI_CLI},{#BATTERY_CMD},BBU]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI battery"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "0c274b950a1c432faef6100239af39bf",
+                                        "expression": "find(/Template LSI_Perc_Lenovo json discovery/lsi.ctl.bbu.replace.[\"{#CTLID}\"],,\"iregexp\",\"No|OK\")=0",
+                                        "name": "LSI: controller \"{#CTLID}\" battery (BBU) is need to be replaced",
+                                        "priority": "HIGH",
+                                        "manual_close": "YES",
+                                        "tags": [
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI storage controller battery state"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "8c61383cabcc47b590345d2932ec1672",
+                                "name": "Controller \"{#CTLID}\" battery (BBU) serial number",
+                                "type": "DEPENDENT",
+                                "key": "lsi.ctl.bbu.sn.[\"{#CTLID}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "TEXT",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Controllers'][{#CTLID}]['Response Data']['BBU_Design_Info'][?(@.Property==\"Serial Number\")]['Value'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.batteryinfo[{$LSI_CLI},{#BATTERY_CMD},BBU]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI battery"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "8b06a98cdd4d48058c1d97d4241eb16e",
+                                        "expression": "(last(/Template LSI_Perc_Lenovo json discovery/lsi.ctl.bbu.sn.[\"{#CTLID}\"],#1)<>last(/Template LSI_Perc_Lenovo json discovery/lsi.ctl.bbu.sn.[\"{#CTLID}\"],#2))=1",
+                                        "recovery_mode": "NONE",
+                                        "name": "LSI: controller \"{#CTLID}\" battery (BBU) was replaced by sn \"{ITEM.VALUE}\"",
+                                        "priority": "INFO",
+                                        "manual_close": "YES",
+                                        "tags": [
+                                            {
+                                                "tag": "ACTION",
+                                                "value": "Close with API"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI storage controller battery replace"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "b35f3d4820fb47558b0b11c1fdc9a3eb",
+                                "name": "Controller \"{#CTLID}\" battery (BBU) state",
+                                "type": "DEPENDENT",
+                                "key": "lsi.ctl.bbu.state.[\"{#CTLID}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "TEXT",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Controllers'][{#CTLID}]['Response Data']['BBU_Info'][0]['State']"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.ctlsinfo[{$LSI_CLI}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI battery"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "a8e262ecc45b4b64aeca7f8f5e700f6f",
+                                        "expression": "find(/Template LSI_Perc_Lenovo json discovery/lsi.ctl.bbu.state.[\"{#CTLID}\"],#2,\"like\",\"Optimal\")=0",
+                                        "name": "LSI: controller \"{#CTLID}\" battery (BBU) state is \"{ITEM.LASTVALUE}\"",
+                                        "priority": "HIGH",
+                                        "manual_close": "YES",
+                                        "tags": [
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI storage controller battery state"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "10b6f9652b0a4d8a8d043fda01be1545",
+                                "name": "Controller \"{#CTLID}\" battery (BBU) type",
+                                "type": "DEPENDENT",
+                                "key": "lsi.ctl.bbu.type.[\"{#CTLID}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "TEXT",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Controllers'][{#CTLID}]['Response Data']['BBU_Info'][?(@.Property==\"Type\")]['Value'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.batteryinfo[{$LSI_CLI},{#BATTERY_CMD},BBU]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI battery"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "56b06c5417b849589d1febcc99826940",
+                                "name": "Controller \"{#CTLID}\" battery (cache vault) need to replace",
+                                "type": "DEPENDENT",
+                                "key": "lsi.ctl.cv.replace.[\"{#CTLID}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "TEXT",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Controllers'][{#CTLID}]['Response Data']['Firmware_Status'][?(@.Property=='Replacement required')]['Value'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.batteryinfo[{$LSI_CLI},{#BATTERY_CMD},CV]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI battery"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "af3b43ab90464f27931bdc5365202e1b",
+                                        "expression": "find(/Template LSI_Perc_Lenovo json discovery/lsi.ctl.cv.replace.[\"{#CTLID}\"],,\"iregexp\",\"No|OK\")=0",
+                                        "name": "LSI: controller \"{#CTLID}\" battery (cache vault) is need to be replaced",
+                                        "priority": "HIGH",
+                                        "manual_close": "YES",
+                                        "tags": [
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI storage controller battery state"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "18b0cd67dc444f94a9dae362c102dfce",
+                                "name": "Controller \"{#CTLID}\" battery (cache vault) serial number",
+                                "type": "DEPENDENT",
+                                "key": "lsi.ctl.cv.sn.[\"{#CTLID}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "TEXT",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Controllers'][{#CTLID}]['Response Data']['Design_Info'][?(@.Property=='Serial Number')]['Value'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.batteryinfo[{$LSI_CLI},{#BATTERY_CMD},CV]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI battery"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "fa8893aa3b474f349f24443c5cd914d3",
+                                        "expression": "(last(/Template LSI_Perc_Lenovo json discovery/lsi.ctl.cv.sn.[\"{#CTLID}\"],#1)<>last(/Template LSI_Perc_Lenovo json discovery/lsi.ctl.cv.sn.[\"{#CTLID}\"],#2))=1",
+                                        "recovery_mode": "NONE",
+                                        "name": "LSI: controller \"{#CTLID}\" battery (cache vault) was replaced by sn \"{ITEM.VALUE}\"",
+                                        "priority": "INFO",
+                                        "manual_close": "YES",
+                                        "tags": [
+                                            {
+                                                "tag": "ACTION",
+                                                "value": "Close with API"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI storage controller battery replace"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "f5a418d603494bccbfe5183b337fb5f8",
+                                "name": "Controller \"{#CTLID}\" battery (cache vault) state",
+                                "type": "DEPENDENT",
+                                "key": "lsi.ctl.cv.state.[\"{#CTLID}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "TEXT",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Controllers'][{#CTLID}]['Response Data']['Cachevault_Info'][0]['State']"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.ctlsinfo[{$LSI_CLI}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI battery"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "cb640b3d6899458e8e9afc76776884f2",
+                                        "expression": "find(/Template LSI_Perc_Lenovo json discovery/lsi.ctl.cv.state.[\"{#CTLID}\"],#2,\"like\",\"Optimal\")=0",
+                                        "name": "LSI: controller \"{#CTLID}\" battery (cache vault) state is \"{ITEM.LASTVALUE}\"",
+                                        "priority": "HIGH",
+                                        "manual_close": "YES",
+                                        "tags": [
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI storage controller battery state"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "64b13b4aa2204b0799e21f26e7a5e43c",
+                                "name": "Controller \"{#CTLID}\" battery (cache vault) type",
+                                "type": "DEPENDENT",
+                                "key": "lsi.ctl.cv.type.[\"{#CTLID}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "TEXT",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Controllers'][{#CTLID}]['Response Data']['Cachevault_Info'][?(@.Property=='Type')]['Value'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.batteryinfo[{$LSI_CLI},{#BATTERY_CMD},CV]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI battery"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "7b7a295b85164f489259121d80b2a70d",
+                                "name": "Controller \"{#CTLID}\" firmware",
+                                "type": "DEPENDENT",
+                                "key": "lsi.ctl.fw.[\"{#CTLID}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "TEXT",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Controllers'][{#CTLID}]['Response Data']['Version']['Firmware Version']"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.ctlsinfo[{$LSI_CLI}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI controllers"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "a2576276f3b74c7d8f07d8ab90822d3e",
+                                "name": "Controller \"{#CTLID}\" model",
+                                "type": "DEPENDENT",
+                                "key": "lsi.ctl.model.[\"{#CTLID}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "TEXT",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Controllers'][{#CTLID}]['Response Data']['Basics']['Model']"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.ctlsinfo[{$LSI_CLI}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI controllers"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "67f56de7d6b840429532f8859151841f",
+                                "name": "Controller \"{#CTLID}\" serial number",
+                                "type": "DEPENDENT",
+                                "key": "lsi.ctl.sn.[\"{#CTLID}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "TEXT",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Controllers'][{#CTLID}]['Response Data']['Basics']['Serial Number']"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.ctlsinfo[{$LSI_CLI}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI controllers"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "2e93088bcd4f4b6cbacf761c8275c9cb",
+                                "name": "Controller \"{#CTLID}\" state (health)",
+                                "type": "DEPENDENT",
+                                "key": "lsi.ctl.state.[\"{#CTLID}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "TEXT",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Controllers'][{#CTLID}]['Response Data']['Status']['Controller Status']"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.ctlsinfo[{$LSI_CLI}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI controllers"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "8271fd103b18401fb5d0f11e6acfbd4c",
+                                        "expression": "find(/Template LSI_Perc_Lenovo json discovery/lsi.ctl.state.[\"{#CTLID}\"],,\"iregexp\",\"Optimal\")=0",
+                                        "name": "LSI: controller \"{#CTLID}\" status is \"{ITEM.LASTVALUE}\"",
+                                        "priority": "HIGH",
+                                        "manual_close": "YES",
+                                        "tags": [
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI storage controller state"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "lsi.ctlsinfo[{$LSI_CLI}]"
+                        },
+                        "lld_macro_paths": [
+                            {
+                                "lld_macro": "{#BATTERY_CMD}",
+                                "path": "$.['Battery command']"
+                            },
+                            {
+                                "lld_macro": "{#BATTERY_TYPE}",
+                                "path": "$.['Battery type']"
+                            },
+                            {
+                                "lld_macro": "{#CTLID}",
+                                "path": "$.['Controller number']"
+                            },
+                            {
+                                "lld_macro": "{#HASBATTERY}",
+                                "path": "$.['Has battery']"
+                            },
+                            {
+                                "lld_macro": "{#MODEL}",
+                                "path": "$.['Model']"
+                            },
+                            {
+                                "lld_macro": "{#SN}",
+                                "path": "$.['Serial Number']"
+                            }
+                        ],
+                        "preprocessing": [
+                            {
+                                "type": "NOT_MATCHES_REGEX",
+                                "parameters": [
+                                    "No Controller found"
+                                ]
+                            },
+                            {
+                                "type": "JAVASCRIPT",
+                                "parameters": [
+                                    "var JsonValue = JSON.parse(value);\nvar prejson = [];\nfor (var i = 0; i < (JsonValue.Controllers).length; i++) {\nvar NeedData = {};\nvar ResponseStatus=JsonValue.Controllers[i]['Command Status']['Status'];\nif (ResponseStatus.match(/Success/g)) {\n\tvar ResponseData = JsonValue.Controllers[i]['Response Data'];\n\t\tNeedData['Controller number'] =  i;\n\t\tNeedData['Has battery'] = \"No\";\n\t\tNeedData['Model'] =  ResponseData['Basics']['Model'];\n\t\tNeedData['Serial Number'] =  ResponseData['Basics']['Serial Number'];\n\t\tif (ResponseData['HwCfg'].hasOwnProperty('BBU')){\n\t\t\tif (ResponseData['HwCfg']['BBU'] === 'Present'){\n\t\t\t\tNeedData['Has battery'] = \"Yes\";\n\t\t\t\tif (ResponseData.hasOwnProperty('Cachevault_Info')){\n\t\t\t\t\tNeedData['Battery command'] = (\"/c\" + i + \"/cv\");\n\t\t\t\t\tNeedData['Battery type'] = (\"CacheVault\");\n\t\t\t\t}\n\t\t\t\telse {\n\t\t\t\t\tNeedData['Battery command'] = (\"/c\" + i + \"/bbu\");\n\t\t\t\t\tNeedData['Battery type'] = \"BBU\";\n\t\t\t\t}\n\t\t}\n\t\tprejson.push(JSON.stringify(NeedData,null,space=0));\n\t}\n}\nelse {\nprejson.push(JsonValue.Controllers[i]['Command Status']['Description']);\n}\n}\nreturn (\"[\" + prejson + \"]\");"
+                                ]
+                            },
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "{$DEFAULT_LLD_THROTTLING_HB_PERIOD}"
+                                ]
+                            }
+                        ],
+                        "overrides": [
+                            {
+                                "name": "BBU battery",
+                                "step": "2",
+                                "stop": "STOP",
+                                "filter": {
+                                    "conditions": [
+                                        {
+                                            "macro": "{#BATTERY_TYPE}",
+                                            "value": "BBU",
+                                            "formulaid": "A"
+                                        }
+                                    ]
+                                },
+                                "operations": [
+                                    {
+                                        "operationobject": "ITEM_PROTOTYPE",
+                                        "operator": "LIKE",
+                                        "value": "cache vault",
+                                        "discover": "NO_DISCOVER"
+                                    },
+                                    {
+                                        "operationobject": "TRIGGER_PROTOTYPE",
+                                        "operator": "LIKE",
+                                        "value": "cache vault",
+                                        "discover": "NO_DISCOVER"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "cache vault battery",
+                                "step": "3",
+                                "stop": "STOP",
+                                "filter": {
+                                    "conditions": [
+                                        {
+                                            "macro": "{#BATTERY_TYPE}",
+                                            "value": "CacheVault",
+                                            "formulaid": "A"
+                                        }
+                                    ]
+                                },
+                                "operations": [
+                                    {
+                                        "operationobject": "ITEM_PROTOTYPE",
+                                        "operator": "LIKE",
+                                        "value": "BBU",
+                                        "discover": "NO_DISCOVER"
+                                    },
+                                    {
+                                        "operationobject": "TRIGGER_PROTOTYPE",
+                                        "operator": "LIKE",
+                                        "value": "BBU",
+                                        "discover": "NO_DISCOVER"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "No battery",
+                                "step": "1",
+                                "stop": "STOP",
+                                "filter": {
+                                    "conditions": [
+                                        {
+                                            "macro": "{#HASBATTERY}",
+                                            "value": "No",
+                                            "formulaid": "A"
+                                        }
+                                    ]
+                                },
+                                "operations": [
+                                    {
+                                        "operationobject": "ITEM_PROTOTYPE",
+                                        "operator": "LIKE",
+                                        "value": "battery",
+                                        "discover": "NO_DISCOVER"
+                                    },
+                                    {
+                                        "operationobject": "TRIGGER_PROTOTYPE",
+                                        "value": "battery",
+                                        "discover": "NO_DISCOVER"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "b1eb9ba90a284070acd79996602c983b",
+                        "name": "Logical disks discovery",
+                        "type": "DEPENDENT",
+                        "key": "lsi.ldslld",
+                        "delay": "0",
+                        "lifetime": "1d",
+                        "item_prototypes": [
+                            {
+                                "uuid": "ad77076d276c49e79189e1bd514c926c",
+                                "name": "Logical disk \"{#LDNAME}\" (id {#LDID})  state",
+                                "type": "DEPENDENT",
+                                "key": "lsi.ld.state.[\"{#LDID}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "TEXT",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Controllers'][{#CONTROLLER}]['Response Data']['VD LIST'][?(@.['DG/VD'] == '{#DGVD}')]['State'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    },
+                                    {
+                                        "type": "JAVASCRIPT",
+                                        "parameters": [
+                                            "switch(value)\n{\ncase 'Optl':\nvalue='Optimal';\nbreak;\ncase 'OfLn':\nvalue='Offline';\nbreak;\ncase 'Pdgd':\nvalue='Partially degraded';\nbreak;\ncase 'Dgrd':\nvalue='Degraded';\nbreak;\n}\nreturn value"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.ctlsinfo[{$LSI_CLI}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Logical disks"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "3e2de59446bb41d2ade1c2a3d2b37493",
+                                        "expression": "find(/Template LSI_Perc_Lenovo json discovery/lsi.ld.state.[\"{#LDID}\"],,\"like\",\"Optimal\")=0",
+                                        "recovery_mode": "RECOVERY_EXPRESSION",
+                                        "recovery_expression": "find(/Template LSI_Perc_Lenovo json discovery/lsi.ld.state.[\"{#LDID}\"],,\"like\",\"Optimal\")=1",
+                                        "name": "LSI: logical disk \"{#LDNAME}\" (\"{#LDID}\") state is \"{ITEM.VALUE}\"",
+                                        "priority": "HIGH",
+                                        "manual_close": "YES",
+                                        "tags": [
+                                            {
+                                                "tag": "LDLEVEL",
+                                                "value": "{#LDLEVEL}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI LD state"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "lsi.ctlsinfo[{$LSI_CLI}]"
+                        },
+                        "lld_macro_paths": [
+                            {
+                                "lld_macro": "{#CONTROLLER}",
+                                "path": "$.['Controller number']"
+                            },
+                            {
+                                "lld_macro": "{#DGVD}",
+                                "path": "$.DGVD"
+                            },
+                            {
+                                "lld_macro": "{#LDID}",
+                                "path": "$.LDID"
+                            },
+                            {
+                                "lld_macro": "{#LDLEVEL}",
+                                "path": "$.Level"
+                            },
+                            {
+                                "lld_macro": "{#LDNAME}",
+                                "path": "$.Name"
+                            }
+                        ],
+                        "preprocessing": [
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "{$DEFAULT_LLD_THROTTLING_HB_PERIOD}"
+                                ]
+                            },
+                            {
+                                "type": "JAVASCRIPT",
+                                "parameters": [
+                                    "var JsonValue = JSON.parse(value);\nvar prejson = [];\nvar LDRegex = /\\/c\\d{1,}\\/v\\d{1,}/;\nfor (var i = 0; i < (JsonValue.Controllers).length; i++) {\n\tvar ResponseStatus=JsonValue.Controllers[i]['Command Status']['Status'];\n\tif (ResponseStatus.match(/Success/g)) {\n\t\tvar CtlPrefix = \"/c\" + i + \"/v\";\n\t\tvar ResponseData = JsonValue.Controllers[i]['Response Data']['VD LIST'];\n\t\tfor (var j = 0; j < (ResponseData).length; j++) {\n\t\t\tvar NeedData = {};\n\t\t\tNeedData['LDID'] = ResponseData[j]['DG/VD'].replace(/\\d{1,}\\//,CtlPrefix);\n\t\t\tNeedData['DGVD'] = ResponseData[j]['DG/VD'];\n\t\t\tNeedData['Name'] = ResponseData[j]['Name'];\n\t\t\tNeedData['Controller number'] =  i;\n\t\t\tNeedData['Level'] =  ResponseData[j]['TYPE'];\n\t\t\tprejson.push(JSON.stringify(NeedData,null,space=0));\n\t\t}\n\t}\n\telse {\n\t\tprejson.push(JsonValue.Controllers[i]['Command Status']['Description']);\n\t}\n}\nreturn (\"[\" + prejson + \"]\");"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "060ce2e76de84b18b739f6bf37b54342",
+                        "name": "Physical disks discovery",
+                        "type": "DEPENDENT",
+                        "key": "lsi.pdlld",
+                        "delay": "0",
+                        "lifetime": "1d",
+                        "item_prototypes": [
+                            {
+                                "uuid": "d53981a9d121483da8db4c56518dd02d",
+                                "name": "Physical disk \"{#SLOT}\" media error count",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.merrcount.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Controllers'][{#CONTROLLER}]['Response Data']['Drive {#SLOT} - Detailed Information']['Drive {#SLOT} State']['Media Error Count']"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_LLD_THROTTLING_HB_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.pdsinfo[{$LSI_CLI},{$LSI_PD_COMMAND}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "d5dc2362fa7c4128a8ac4581e061ed7e",
+                                        "expression": "last(/Template LSI_Perc_Lenovo json discovery/lsi.pd.merrcount.[\"{#SLOT}\"])>100",
+                                        "recovery_mode": "RECOVERY_EXPRESSION",
+                                        "recovery_expression": "last(/Template LSI_Perc_Lenovo json discovery/lsi.pd.merrcount.[\"{#SLOT}\"])=0",
+                                        "name": "LSI: physical disk \"{#SLOT}\" media error count is \"{ITEM.VALUE}\"",
+                                        "priority": "HIGH",
+                                        "manual_close": "YES",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD media error"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "d5cefef073f04f18a29b04a7e4b4c612",
+                                "name": "Physical disk \"{#SLOT}\" model",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.model.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "TEXT",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Controllers'][{#CONTROLLER}]['Response Data']['Drive {#SLOT} - Detailed Information']['Drive {#SLOT} Device attributes']['Model Number']"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.pdsinfo[{$LSI_CLI},{$LSI_PD_COMMAND}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "7db2a0a6098f4413bc6a3845923a5c1d",
+                                "name": "Physical disk \"{#SLOT}\" other error count",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.otherrcount.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Controllers'][{#CONTROLLER}]['Response Data']['Drive {#SLOT} - Detailed Information']['Drive {#SLOT} State']['Other Error Count']"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.pdsinfo[{$LSI_CLI},{$LSI_PD_COMMAND}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "d653130c9d57492b9f6ebe14baf92647",
+                                "name": "Physical disk \"{#SLOT}\" predictive failure count",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.predicterrcount.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Controllers'][{#CONTROLLER}]['Response Data']['Drive {#SLOT} - Detailed Information']['Drive {#SLOT} State']['Predictive Failure Count']"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.pdsinfo[{$LSI_CLI},{$LSI_PD_COMMAND}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "cd87c88587a4437cad0793f3dc93d72d",
+                                        "expression": "last(/Template LSI_Perc_Lenovo json discovery/lsi.pd.predicterrcount.[\"{#SLOT}\"],#2)>0 and (last(/Template LSI_Perc_Lenovo json discovery/lsi.pd.predicterrcount.[\"{#SLOT}\"],#1)<>last(/Template LSI_Perc_Lenovo json discovery/lsi.pd.predicterrcount.[\"{#SLOT}\"],#2))=1",
+                                        "recovery_mode": "RECOVERY_EXPRESSION",
+                                        "recovery_expression": "last(/Template LSI_Perc_Lenovo json discovery/lsi.pd.predicterrcount.[\"{#SLOT}\"])=0",
+                                        "name": "LSI: physical disk \"{#SLOT}\" predictive failure count is \"{ITEM.VALUE}\". Growing up",
+                                        "priority": "HIGH",
+                                        "manual_close": "YES",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD prefailures"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "892b6649886f4d36814ae5ad2020c87a",
+                                        "expression": "last(/Template LSI_Perc_Lenovo json discovery/lsi.pd.predicterrcount.[\"{#SLOT}\"])>0",
+                                        "recovery_mode": "NONE",
+                                        "name": "LSI: physical disk \"{#SLOT}\" predictive failure count is not null: \"{ITEM.LASTVALUE}\"",
+                                        "priority": "WARNING",
+                                        "manual_close": "YES",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD prefailures"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "a38d89dd0153434ca7e2c97e35e208bc",
+                                "name": "Physical disk \"{#SLOT}\" size",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.size.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "TEXT",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Controllers'][{#CONTROLLER}]['Response Data']['Drive {#SLOT}'][0]['Size']"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.pdsinfo[{$LSI_CLI},{$LSI_PD_COMMAND}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "9a05a7daf69d420a8edfbd28e487483f",
+                                "name": "Physical disk \"{#SLOT}\" SMART flag",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.smartflag.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "TEXT",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Controllers'][{#CONTROLLER}]['Response Data']['Drive {#SLOT} - Detailed Information']['Drive {#SLOT} State']['S.M.A.R.T alert flagged by drive']"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.pdsinfo[{$LSI_CLI},{$LSI_PD_COMMAND}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "675dbcc1c821460f9ccd470ccb028f3e",
+                                        "expression": "find(/Template LSI_Perc_Lenovo json discovery/lsi.pd.smartflag.[\"{#SLOT}\"],,\"like\",\"Yes\")=1",
+                                        "name": "LSI: physical disk: SMART flag was raised up on \"{#SLOT}\"",
+                                        "priority": "HIGH",
+                                        "manual_close": "YES",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD SMART flag"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "ca4fd3e6702e4aeea1684ccead0fbe3b",
+                                "name": "Physical disk \"{#SLOT}\" serial number",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.sn.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "TEXT",
+                                "preprocessing": [
+                                    {
+                                        "type": "NOT_MATCHES_REGEX",
+                                        "parameters": [
+                                            "^N\\/A?"
+                                        ]
+                                    },
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Controllers'][{#CONTROLLER}]['Response Data']['Drive {#SLOT} - Detailed Information']['Drive {#SLOT} Device attributes']['SN']"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    },
+                                    {
+                                        "type": "TRIM",
+                                        "parameters": [
+                                            "\\s*"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.pdsinfo[{$LSI_CLI},{$LSI_PD_COMMAND}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "e43492ebbd044c938403c528771a0299",
+                                        "expression": "(last(/Template LSI_Perc_Lenovo json discovery/lsi.pd.sn.[\"{#SLOT}\"],#1)<>last(/Template LSI_Perc_Lenovo json discovery/lsi.pd.sn.[\"{#SLOT}\"],#2))=1 and length(last(/Template LSI_Perc_Lenovo json discovery/lsi.pd.sn.[\"{#SLOT}\"]))>0",
+                                        "name": "LSI: physical disk \"{#SLOT}\" was replaced by sn  \"{ITEM.LASTVALUE}\"",
+                                        "priority": "INFO",
+                                        "manual_close": "YES",
+                                        "tags": [
+                                            {
+                                                "tag": "ACTION",
+                                                "value": "Close with API"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD replace"
+                                            },
+                                            {
+                                                "tag": "TEST",
+                                                "value": "YES"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "32abfa192d5648559bc802074a85b57b",
+                                "name": "Physical disk \"{#SLOT}\" state",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.state.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "TEXT",
+                                "preprocessing": [
+                                    {
+                                        "type": "CHECK_NOT_SUPPORTED",
+                                        "parameters": [
+                                            ""
+                                        ],
+                                        "error_handler": "CUSTOM_VALUE",
+                                        "error_handler_params": "NODATA"
+                                    },
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Controllers'][{#CONTROLLER}]['Response Data']['Drive {#SLOT}'][0]['State']"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    },
+                                    {
+                                        "type": "JAVASCRIPT",
+                                        "parameters": [
+                                            "switch(value)\n{\ncase 'Onln':\nvalue='Online';\nbreak;\ncase 'Ugood':\nvalue='Unconfigured-Good';\nbreak;\ncase 'UGood':\nvalue='Unconfigured-Good';\nbreak;\ncase 'Ubad':\nvalue='Unconfigured-Bad';\nbreak;\ncase 'UBad':\nvalue='Unconfigured-Bad';\nbreak;\ncase 'Msng':\nvalue='Missing';\nbreak;\ncase 'Offln':\nvalue='Offline';\nbreak;\ncase 'F':\nvalue='Foreign';\nbreak;\ncase 'GHS':\nvalue='Global Hot Spare';\nbreak;\ncase 'DHS':\nvalue='Dedicated Hot Spare';\nbreak;\ncase 'Rbld':\nvalue='Rebuild';\nbreak;\n}\nreturn value"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.pdsinfo[{$LSI_CLI},{$LSI_PD_COMMAND}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "cab800b93b804ffd83b3e4b44e6deb73",
+                                        "expression": "find(/Template LSI_Perc_Lenovo json discovery/lsi.pd.state.[\"{#SLOT}\"],,\"iregexp\",\"Unconfigured-Bad\")=1",
+                                        "name": "LSI: physical disk \"{#SLOT}\" is \"Unconfigured-Bad\"",
+                                        "priority": "HIGH",
+                                        "manual_close": "YES",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD state"
+                                            },
+                                            {
+                                                "tag": "TEST",
+                                                "value": "YES"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "27dc39cad1224648818781174469dd7a",
+                                        "expression": "find(/Template LSI_Perc_Lenovo json discovery/lsi.pd.state.[\"{#SLOT}\"],,\"iregexp\",\"{$PD_HIGH_SEVERITY_STATES}\")=1",
+                                        "name": "LSI: physical disk \"{#SLOT}\" is \"{ITEM.VALUE}\"",
+                                        "priority": "HIGH",
+                                        "manual_close": "YES",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD state"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "2c08159b13604d558ce6ba7a6cea5d59",
+                                        "expression": "find(/Template LSI_Perc_Lenovo json discovery/lsi.pd.state.[\"{#SLOT}\"],,\"iregexp\",\"NODATA\")=1",
+                                        "name": "LSI: physical disk \"{#SLOT}\" no data (not discovered)",
+                                        "priority": "HIGH",
+                                        "manual_close": "YES",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD NODATA"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "6af889780d9b464ba2f1cc92e7ae849d",
+                                        "expression": "find(/Template LSI_Perc_Lenovo json discovery/lsi.pd.state.[\"{#SLOT}\"],,\"iregexp\",\"Rebuild\")=1",
+                                        "name": "LSI: physical disk \"{#SLOT}\" state is \"{ITEM.VALUE}\"",
+                                        "priority": "INFO",
+                                        "manual_close": "YES",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD state"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "0b104fc00d774749a2a2ff0a4665ac5a",
+                                        "expression": "find(/Template LSI_Perc_Lenovo json discovery/lsi.pd.state.[\"{#SLOT}\"],#1,\"like\",\"Unconfigured-Good\")=1 and find(/Template LSI_Perc_Lenovo json discovery/lsi.pd.state.[\"{#SLOT}\"],#2,\"like\",\"Optimal\")=1",
+                                        "name": "LSI: physical disk \"{#SLOT}\" state was changed from \"Optimal\" to \"Unconfigured-Good\"",
+                                        "priority": "WARNING",
+                                        "manual_close": "YES",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD state"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "lsi.SMART.lld"
+                        },
+                        "lld_macro_paths": [
+                            {
+                                "lld_macro": "{#CAPACITY}",
+                                "path": "$.['Size']"
+                            },
+                            {
+                                "lld_macro": "{#CONTROLLER}",
+                                "path": "$.['Controller number']"
+                            },
+                            {
+                                "lld_macro": "{#DG}",
+                                "path": "$.['Disk group']"
+                            },
+                            {
+                                "lld_macro": "{#MODEL}",
+                                "path": "$.['Model']"
+                            },
+                            {
+                                "lld_macro": "{#PDSN}",
+                                "path": "$.['Serial Number']"
+                            },
+                            {
+                                "lld_macro": "{#PDTYPE}",
+                                "path": "$.['Type']"
+                            },
+                            {
+                                "lld_macro": "{#SLOT}",
+                                "path": "$.['SLOT']"
+                            }
+                        ]
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "APP",
+                        "value": "LSI (Perc) storage controller"
+                    }
+                ],
+                "macros": [
+                    {
+                        "macro": "{$DEFAULT_KLR_PERIOD}",
+                        "value": "6h"
+                    },
+                    {
+                        "macro": "{$LD_KLR_PERIOD}",
+                        "value": "1h"
+                    },
+                    {
+                        "macro": "{$LD_RECOVERY_STATES}",
+                        "value": "Opt|OK"
+                    },
+                    {
+                        "macro": "{$LSI_CLI}",
+                        "value": "storcli64"
+                    },
+                    {
+                        "macro": "{$LSI_PD_COMMAND}",
+                        "value": "/call/eall/sall"
+                    },
+                    {
+                        "macro": "{$PD_HIGH_SEVERITY_STATES}",
+                        "value": "Missing|Offline|Foreign|Failed"
+                    },
+                    {
+                        "macro": "{$PD_KLR_PERIOD}",
+                        "value": "1d"
+                    }
+                ]
+            }
+        ]
+    }
+}
