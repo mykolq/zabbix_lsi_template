@@ -1,2 +1,2 @@
 zabbix ALL= (ALL) NOPASSWD: /etc/zabbix/diskutils/avago/storcli64 /call show all j,/etc/zabbix/diskutils/avago/storcli64 /call/vall show all j,/etc/zabbix/diskutils/avago/storcli64 /call/eall/sall  show all j,/etc/zabbix/diskutils/avago/storcli64 /call/sall  show all j,/etc/zabbix/diskutils/avago/storcli64 /c?/bbu show all j, /etc/zabbix/diskutils/avago/perccli64 /call show all j,/etc/zabbix/diskutils/avago/perccli64 /call/vall show all j,/etc/zabbix/diskutils/avago/perccli64 /call/eall/sall  show all j,/etc/zabbix/diskutils/avago/perccli64 /call/sall  show all j,/etc/zabbix/diskutils/avago/perccli64 /c?/bbu show all j
-Defaults:zabbix !requiretty,visiblepw,!logfile,!syslog,!pam_session
+Defaults: zabbix !requiretty,visiblepw,!logfile,!syslog,!pam_session
