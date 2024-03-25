@@ -1,4 +1,4 @@
-# zabbix_lsi_template
+# zabbix_lsi_template for agent 2 module
 ## Description
 
 This template is for discovering and monitoring LSI based (Avago, Broadcom, Perc, Lenovo) storage controllers by using json outputs of storcli64 and perccli64 tool.
@@ -34,10 +34,8 @@ and javascript preprocessing on zabbix server side)
    * {$ADAP_THROTTLING_HB_PERIOD} - period of heartbit for throttling for adapter data
    * {$LD_THROTTLING_HB_PERIOD} - period of heartbit for throttling for logical discs data
    * {$PD_THROTTLING_HB_PERIOD} - period of heartbit for throttling for physical discs data.
-* Connect template to agent, configure {$LSI_CLI} = 'perccl64' host macro if this host has Perc controller. All
-  other controllers use storcli64 and it is default option. {$LSI_PD_COMMAND} has default option '/call/eall/sall'
-  and can be counted by template
-*For automating changes of {$LSI_PD_COMMAND} you have to do instructions below:
+
+*For automating changes of template macro you have to do instructions below or doing something like that by yourself:
   * Create user for API. This user must have write access for changing settings of servers, monitoring by this template.
   * Install pyzabbix module for you default python version (Something like pip install pyzabbix)
   * Copy updatehostmacro.py script to your zabbix external script folder
@@ -49,18 +47,6 @@ and javascript preprocessing on zabbix server side)
   * Add step for execution 'Update hostmacro' script
   
   
-### Windows
-  
-  * Copy storcli64, perccli64 utility (you can use version in diskutils_windows.zip) in place where you store things like this
-  * Copy lsi_raid_win.conf in zabbix_agent configs folder
-  * Edit storcli paths in lsi_raid_win.conf.
-  
-### Linux (tested with Centos 7 with disabled SELinux, Ubuntu 20.04)
-  
-  * Copy storcli64, perccli64 utility (you can use version in diskutils_windows.zip) in place where you store things like this
-  * Copy lsi_raid_linux.conf in zabbix_agent configs folder (by default /etc/zabbix/zabbix_agentd.d/)
-  * Check and edit storcli paths in lsi_raid_linux.conf
-  * Copy sudoers_zabbix file to /etc/sudoers.d. Check path for storcli64, perccli64.
-  
-  
-  Later today or tomorrow i will add default macro values in template
+### Agent servers
+
+Just use module from here https://github.com/mykolq/zabbix_agent2_plugins/tree/main/lsi 
