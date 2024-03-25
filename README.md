@@ -19,18 +19,9 @@ Now it works only with zabbix 6.4 and higher
 
 * Import template
 * Create and configure global or template macroses:
-  * {$ADAP_DISCOVERY_PERIOD} - adapters discovery period. I think you can set it nearly 1d (daily)
-  * {$ADAP_HISTORY_PERIOD} - period of saving history for adapters data. For example 30d
-  * {$ADAP_REQUEST_PERIOD} - period of requesting storage adapters data ( adapter,battery state, etc). 1h
-  * {$LD_DISCOVERY_PERIOD} - logical discs discovery period. 6h
-  * {$LD_HISTORY_PERIOD} - period of saving history for logical discs data. 30d
-  * {$LD_REQUEST_PERIOD} - period of requesting logical discs data. 5m
-  * {$PD_DISCOVERY_PERIOD} - physical discs discovery period. 30m
-  * {$PD_HISTORY_PERIOD} - period of saving history for physical discs data. 30d
-  * {$PD_REQUEST_PERIOD} - period of requesting physical discs data. 5m
-   * {$ADAP_THROTTLING_HB_PERIOD} - period of heartbit for throttling for adapter data
-   * {$LD_THROTTLING_HB_PERIOD} - period of heartbit for throttling for logical discs data
-   * {$PD_THROTTLING_HB_PERIOD} - period of heartbit for throttling for physical discs data.
+  * {$DEFAULT_HISTORY_PERIOD}	- how much time store history
+  * {$PD_REQUEST_PERIOD} - period of requesting physical discs data (if it cannot get by lsi.allinfo metric)
+* Configure, if needed, predifened template macroses
 
 *For automating changes of template macro you have to do instructions below or doing something like that by yourself:
   * Create user for API. This user must have write access for changing settings of servers, monitoring by this template.
