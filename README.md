@@ -20,6 +20,7 @@ Now it works only with zabbix 6.4 and higher
 * Import template
 * Create and configure global or template macroses:
   * {$DEFAULT_HISTORY_PERIOD}	- how much time store history
+  * {$DEFAULT_ITEM_THROTTLING_PERIOD} - period for throttling metrics (it seems 24h is good)
   * {$PD_REQUEST_PERIOD} - period of requesting physical discs data (if it cannot get by lsi.allinfo metric)
 * Configure, if needed, predifened template macroses
 
