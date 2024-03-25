@@ -1,0 +1,2384 @@
+{
+    "zabbix_export": {
+        "version": "6.4",
+        "template_groups": [
+            {
+                "uuid": "040d20d408f447c4a041176b8604e5e9",
+                "name": "Templates/storage controllers"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "35ac8bb302b6493fb5c0c80dedd5a79c",
+                "template": "LSI_Perc_Lenovo agent 2 module",
+                "name": "LSI_Perc_Lenovo agent 2 module",
+                "groups": [
+                    {
+                        "name": "Templates/storage controllers"
+                    }
+                ],
+                "items": [
+                    {
+                        "uuid": "0a3ce788b9e049279541643d46c9e12c",
+                        "name": "All info errors",
+                        "type": "DEPENDENT",
+                        "key": "lsi.allinfo.errors",
+                        "delay": "0",
+                        "history": "{$DEFAULT_HISTORY_PERIOD}",
+                        "trends": "0",
+                        "value_type": "CHAR",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$[\"Errors\"]"
+                                ],
+                                "error_handler": "CUSTOM_VALUE",
+                                "error_handler_params": "Not errors"
+                            },
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "lsi.allinfo[{$LSI_CLI}]"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "LSI Internal items"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "c1713fc63a4b4224b7f55555b2001c12",
+                                "expression": "find(/LSI_Perc_Lenovo agent 2 module/lsi.allinfo.errors,,\"iregexp\",\"Not errors\")=0",
+                                "name": "LSI: error \"{ITEM.VALUE}\"",
+                                "priority": "WARNING",
+                                "manual_close": "YES",
+                                "tags": [
+                                    {
+                                        "tag": "TEST",
+                                        "value": "YES"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "abc154fa6c354534b975e124eccb59cf",
+                        "name": "All info smart map",
+                        "type": "DEPENDENT",
+                        "key": "lsi.allinfo.smartmap",
+                        "delay": "0",
+                        "history": "{$DEFAULT_HISTORY_PERIOD}",
+                        "trends": "0",
+                        "value_type": "TEXT",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$[\"SmartMap\"]"
+                                ],
+                                "error_handler": "CUSTOM_VALUE",
+                                "error_handler_params": "no smart map here"
+                            },
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "lsi.allinfo[{$LSI_CLI}]"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "LSI Internal items"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "04ad3c990b5c4756a2c5345bede08667",
+                                "expression": "(last(/LSI_Perc_Lenovo agent 2 module/lsi.allinfo.smartmap,#1)<>last(/LSI_Perc_Lenovo agent 2 module/lsi.allinfo.smartmap,#2))=1 and length(last(/LSI_Perc_Lenovo agent 2 module/lsi.allinfo.smartmap))>0 and find(/LSI_Perc_Lenovo agent 2 module/lsi.allinfo.smartmap,,,\"no smart map here\")=0 or(count(/LSI_Perc_Lenovo agent 2 module/lsi.allinfo.smartmap,#2)<2 and find(/LSI_Perc_Lenovo agent 2 module/lsi.allinfo.smartmap,,,\"no smart map here\")=0)",
+                                "name": "LSI: smart map was changed (ctl)",
+                                "type": "MULTIPLE",
+                                "manual_close": "YES",
+                                "tags": [
+                                    {
+                                        "tag": "NOTIFY",
+                                        "value": "NO"
+                                    },
+                                    {
+                                        "tag": "SMART_MAP_DATA",
+                                        "value": "{ITEM.VALUE}"
+                                    },
+                                    {
+                                        "tag": "SMART_MAP_SOURCE",
+                                        "value": "LSI"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "c00b3e1e4de94f14b6127633203c5d11",
+                        "name": "All ctl info",
+                        "key": "lsi.allinfo[{$LSI_CLI}]",
+                        "delay": "{$LSI_REQUEST_PERIOD}",
+                        "history": "0",
+                        "trends": "0",
+                        "value_type": "TEXT",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "LSI Internal items"
+                            },
+                            {
+                                "tag": "CONTROLLED_ITEM",
+                                "value": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "da5791a014974609ab92996f2b3aa719",
+                        "name": "Batteries additional info",
+                        "key": "lsi.batteriesinfo[{$LSI_CLI}, {$LSI_BATTERY_METHOD}]",
+                        "delay": "{$LSI_BATTERY_REQUEST_PERIOD}",
+                        "history": "0",
+                        "trends": "0",
+                        "value_type": "TEXT",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "LSI Internal items"
+                            },
+                            {
+                                "tag": "CONTROLLED_ITEM",
+                                "value": "YES"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "8505266e1a214a0f9899188e115dcd5a",
+                        "name": "Battery existsting flag",
+                        "type": "DEPENDENT",
+                        "key": "lsi.flag.batteryexists",
+                        "delay": "0",
+                        "history": "{$DEFAULT_HISTORY_PERIOD}",
+                        "trends": "0",
+                        "value_type": "CHAR",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$[\"Flags\"][\"BatteryExists\"]"
+                                ]
+                            },
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "lsi.allinfo[{$LSI_CLI}]"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "LSI Internal items"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "1f5bde4094f64a3fae0147441e877ae7",
+                        "name": "Getting battery info flag",
+                        "type": "DEPENDENT",
+                        "key": "lsi.flag.batteryinfo",
+                        "delay": "0",
+                        "history": "{$DEFAULT_HISTORY_PERIOD}",
+                        "trends": "0",
+                        "value_type": "CHAR",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$[\"Flags\"][\"BatteryInfoArgs\"]"
+                                ]
+                            },
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "lsi.allinfo[{$LSI_CLI}]"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "LSI Internal items"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "6da1a9071fa94208a9edc9b9d3442c99",
+                                "expression": "find(/LSI_Perc_Lenovo agent 2 module/lsi.flag.batteryinfo,,\"iregexp\",\"{$LSI_BATTERY_METHOD}\")=0",
+                                "name": "LSI: argument for getting batteries additional info is {ITEM.VALUE}",
+                                "manual_close": "YES",
+                                "tags": [
+                                    {
+                                        "tag": "ACTION",
+                                        "value": "Change macro value on host"
+                                    },
+                                    {
+                                        "tag": "MACRONAME",
+                                        "value": "LSI_BATTERY_METHOD"
+                                    },
+                                    {
+                                        "tag": "MACROVALUE",
+                                        "value": "{ITEM.VALUE}"
+                                    },
+                                    {
+                                        "tag": "NOTIFY",
+                                        "value": "NO"
+                                    },
+                                    {
+                                        "tag": "SOURCE",
+                                        "value": "LSI batteries getting param"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "7fd0159591a74cd4bae81a1996ea390d",
+                        "name": "Getting physical disks from controller info flag",
+                        "type": "DEPENDENT",
+                        "key": "lsi.flag.pdsfromctl",
+                        "delay": "0",
+                        "history": "{$DEFAULT_HISTORY_PERIOD}",
+                        "trends": "0",
+                        "value_type": "CHAR",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$[\"Flags\"][\"PdInfoFromCtl\"]"
+                                ]
+                            },
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "lsi.allinfo[{$LSI_CLI}]"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "LSI Internal items"
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "4770de7a3fcd4b5990f255791632fd3f",
+                        "name": "Getting physical disks info flag",
+                        "type": "DEPENDENT",
+                        "key": "lsi.flag.pdsinfo",
+                        "delay": "0",
+                        "history": "{$DEFAULT_HISTORY_PERIOD}",
+                        "trends": "0",
+                        "value_type": "CHAR",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$[\"Flags\"][\"PdInfoArgs\"]"
+                                ]
+                            },
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "lsi.allinfo[{$LSI_CLI}]"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "LSI Internal items"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "9b79b246533048c7b9ac2373fd8dd39c",
+                                "expression": "find(/LSI_Perc_Lenovo agent 2 module/lsi.flag.pdsinfo,,\"iregexp\",\"{$LSI_PD_METHOD}\")=0",
+                                "name": "LSI: argument for getting physical disks info is {ITEM.VALUE}",
+                                "manual_close": "YES",
+                                "tags": [
+                                    {
+                                        "tag": "ACTION",
+                                        "value": "Change macro value on host"
+                                    },
+                                    {
+                                        "tag": "MACRONAME",
+                                        "value": "LSI_PD_METHOD"
+                                    },
+                                    {
+                                        "tag": "MACROVALUE",
+                                        "value": "{ITEM.VALUE}"
+                                    },
+                                    {
+                                        "tag": "NOTIFY",
+                                        "value": "NO"
+                                    },
+                                    {
+                                        "tag": "SOURCE",
+                                        "value": "LSI PD getting param"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "91a13d3b7b3c4754933b2ad3f90a17c6",
+                        "name": "Pd info smart map",
+                        "type": "DEPENDENT",
+                        "key": "lsi.pdinfo.smartmap",
+                        "delay": "0",
+                        "history": "{$DEFAULT_HISTORY_PERIOD}",
+                        "trends": "0",
+                        "status": "DISABLED",
+                        "value_type": "TEXT",
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$[\"SmartMap\"]"
+                                ],
+                                "error_handler": "CUSTOM_VALUE",
+                                "error_handler_params": "no smart map here"
+                            },
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "lsi.pdsinfo[{$LSI_CLI}, {$LSI_PD_METHOD}]"
+                        },
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "LSI Internal items"
+                            }
+                        ],
+                        "triggers": [
+                            {
+                                "uuid": "a17dd8fcaadd43839c3f4414f4effe87",
+                                "expression": "((last(/LSI_Perc_Lenovo agent 2 module/lsi.pdinfo.smartmap,#1)<>last(/LSI_Perc_Lenovo agent 2 module/lsi.pdinfo.smartmap,#2))=1 and length(last(/LSI_Perc_Lenovo agent 2 module/lsi.pdinfo.smartmap))>0 and find(/LSI_Perc_Lenovo agent 2 module/lsi.pdinfo.smartmap,,,\"no smart map here\")=0) or (count(/LSI_Perc_Lenovo agent 2 module/lsi.pdinfo.smartmap,#2)<2 and find(/LSI_Perc_Lenovo agent 2 module/lsi.pdinfo.smartmap,,,\"no smart map here\")=0)",
+                                "name": "LSI: smart map was changed (pd)",
+                                "status": "DISABLED",
+                                "type": "MULTIPLE",
+                                "manual_close": "YES",
+                                "tags": [
+                                    {
+                                        "tag": "NOTIFY",
+                                        "value": "NO"
+                                    },
+                                    {
+                                        "tag": "SMART_MAP_DATA",
+                                        "value": "{ITEM.VALUE}"
+                                    },
+                                    {
+                                        "tag": "SMART_MAP_SOURCE",
+                                        "value": "LSI"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "8f50c2ffcd764855a58ed6ff909857af",
+                        "name": "PD all info",
+                        "key": "lsi.pdsinfo[{$LSI_CLI}, {$LSI_PD_METHOD}]",
+                        "delay": "{$PD_REQUEST_PERIOD}",
+                        "history": "0",
+                        "trends": "0",
+                        "value_type": "TEXT",
+                        "tags": [
+                            {
+                                "tag": "Application",
+                                "value": "LSI Internal items"
+                            },
+                            {
+                                "tag": "CONTROLLED_ITEM",
+                                "value": "YES"
+                            }
+                        ]
+                    }
+                ],
+                "discovery_rules": [
+                    {
+                        "uuid": "e0a11f67956a4c4f949dbce2a2fb39a5",
+                        "name": "Batteries discovery",
+                        "type": "DEPENDENT",
+                        "key": "lsi.batterylld",
+                        "delay": "0",
+                        "lifetime": "{$DEFAULT_KLR_PERIOD}",
+                        "item_prototypes": [
+                            {
+                                "uuid": "5ebdba80fa7348919f9d40231ae936fa",
+                                "name": "{#TYPE} battery (controller {#CTLID}) charging status",
+                                "type": "DEPENDENT",
+                                "key": "lsi.battery.chargestatus.[\"{#CTLID}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "CHAR",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Batteries'][?(@.['ControllerId'] == '{#CTLID}')]['ChargingStatus'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.allinfo[{$LSI_CLI}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI batteries"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "2d80e5fab49d4656bc9dd774df13a2cf",
+                                "name": "{#TYPE} battery (controller {#CTLID})  need to be replaced state",
+                                "type": "DEPENDENT",
+                                "key": "lsi.battery.replacestate.[\"{#CTLID}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "CHAR",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['{#TYPE}'][?(@.['ControllerId'] == '{#CTLID}')]['NeedReplace'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.batteriesinfo[{$LSI_CLI}, {$LSI_BATTERY_METHOD}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI batteries"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "b56341bc80e9462ab834220fa93c4d7b",
+                                        "expression": "find(/LSI_Perc_Lenovo agent 2 module/lsi.battery.replacestate.[\"{#CTLID}\"],,\"iregexp\",\"OK\")=1 and find(/LSI_Perc_Lenovo agent 2 module/lsi.battery.replacestate.[\"{#CTLID}\"],,\"iregexp\",\"No\")=0 and \nlast(/LSI_Perc_Lenovo agent 2 module/lsi.battery.replacestate.[\"{#CTLID}\"])<>0",
+                                        "name": "LSI: {#TYPE} battery (controller {#CTLID}) is need to be replaced",
+                                        "priority": "HIGH",
+                                        "tags": [
+                                            {
+                                                "tag": "MON_TAG_TEST",
+                                                "value": "YES"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI storage controller battery state"
+                                            },
+                                            {
+                                                "tag": "YT_CREATE_TICKET",
+                                                "value": "YES"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "8cfbf4f7b3204528a4fba4645d7eec51",
+                                "name": "{#TYPE} battery (controller {#CTLID})  state",
+                                "type": "DEPENDENT",
+                                "key": "lsi.battery.state.[\"{#CTLID}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "CHAR",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Batteries'][?(@.['ControllerId'] == '{#CTLID}')]['State'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.allinfo[{$LSI_CLI}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI batteries"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "bca9f821db8d488f85c8521d52977660",
+                                        "expression": "find(/LSI_Perc_Lenovo agent 2 module/lsi.battery.state.[\"{#CTLID}\"],,,\"Optimal\")=0 and last(/LSI_Perc_Lenovo agent 2 module/lsi.battery.state.[\"{#CTLID}\"])<>0",
+                                        "name": "LSI: {#TYPE} battery (controller {#CTLID}) state is \"{ITEM.LASTVALUE}\"",
+                                        "priority": "HIGH",
+                                        "dependencies": [
+                                            {
+                                                "name": "LSI: {#TYPE} battery (controller {#CTLID}) is need to be replaced",
+                                                "expression": "find(/LSI_Perc_Lenovo agent 2 module/lsi.battery.replacestate.[\"{#CTLID}\"],,\"iregexp\",\"OK\")=1 and find(/LSI_Perc_Lenovo agent 2 module/lsi.battery.replacestate.[\"{#CTLID}\"],,\"iregexp\",\"No\")=0 and \nlast(/LSI_Perc_Lenovo agent 2 module/lsi.battery.replacestate.[\"{#CTLID}\"])<>0"
+                                            }
+                                        ],
+                                        "tags": [
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI storage controller battery state"
+                                            },
+                                            {
+                                                "tag": "YT_CREATE_TICKET",
+                                                "value": "YES"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "8e4d2f3ab0a0462796ca6aed353236e7",
+                                "name": "{#TYPE} battery (controller {#CTLID})  subtype",
+                                "type": "DEPENDENT",
+                                "key": "lsi.battery.subtype.[\"{#CTLID}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "CHAR",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['{#TYPE}'][?(@.['ControllerId'] == '{#CTLID}')]['Subtype'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.batteriesinfo[{$LSI_CLI}, {$LSI_BATTERY_METHOD}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI batteries"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "1de630203e8b446ba0be4d541bceeafb",
+                                "name": "{#TYPE} battery (controller {#CTLID}) temperature",
+                                "type": "DEPENDENT",
+                                "key": "lsi.battery.temp.[\"{#CTLID}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "units": "C",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['Batteries'][?(@.['ControllerId'] == '{#CTLID}')]['Temp'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.allinfo[{$LSI_CLI}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI batteries"
+                                    }
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "lsi.allinfo[{$LSI_CLI}]"
+                        },
+                        "lld_macro_paths": [
+                            {
+                                "lld_macro": "{#CTLID}",
+                                "path": "$.['ControllerId']"
+                            },
+                            {
+                                "lld_macro": "{#TYPE}",
+                                "path": "$.['Type']"
+                            }
+                        ],
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$[\"Batteries\"]"
+                                ]
+                            },
+                            {
+                                "type": "NOT_MATCHES_REGEX",
+                                "parameters": [
+                                    "null"
+                                ]
+                            },
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "{$DEFAULT_LLD_THROTTLING_HB_PERIOD}"
+                                ]
+                            }
+                        ],
+                        "overrides": [
+                            {
+                                "name": "disabling for cache vault",
+                                "step": "1",
+                                "filter": {
+                                    "conditions": [
+                                        {
+                                            "macro": "{#TYPE}",
+                                            "value": "BBU",
+                                            "operator": "NOT_MATCHES_REGEX",
+                                            "formulaid": "A"
+                                        }
+                                    ]
+                                },
+                                "operations": [
+                                    {
+                                        "operationobject": "ITEM_PROTOTYPE",
+                                        "operator": "REGEXP",
+                                        "value": ".*charging status",
+                                        "status": "DISABLED",
+                                        "discover": "NO_DISCOVER"
+                                    },
+                                    {
+                                        "operationobject": "TRIGGER_PROTOTYPE",
+                                        "operator": "REGEXP",
+                                        "value": ".*charging status",
+                                        "status": "DISABLED",
+                                        "discover": "NO_DISCOVER"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "53b1f08301ab492cacaa42737cc36cc4",
+                        "name": "Controllers discovery",
+                        "type": "DEPENDENT",
+                        "key": "lsi.ctllld",
+                        "delay": "0",
+                        "lifetime": "{$DEFAULT_KLR_PERIOD}",
+                        "item_prototypes": [
+                            {
+                                "uuid": "0b40e8de908c499292a3970fc65bf62c",
+                                "name": "Controller \"{#CTLID}\" state (health)",
+                                "type": "DEPENDENT",
+                                "key": "lsi.ctl.state.[\"{#CTLID}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "CHAR",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['StorageControllers'][?(@.[\"Id\"] == '{#CTLID}')]['State'].first()"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.allinfo[{$LSI_CLI}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI controllers"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "85e04be2188c4bf586e837652ea58e53",
+                                        "expression": "find(/LSI_Perc_Lenovo agent 2 module/lsi.ctl.state.[\"{#CTLID}\"],,\"iregexp\",\"{$LSI_CTL_OK_STATE}\")=0",
+                                        "name": "LSI: controller \"{#CTLID}\" status is \"{ITEM.LASTVALUE}\"",
+                                        "priority": "HIGH",
+                                        "tags": [
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI storage controller state"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "lsi.allinfo[{$LSI_CLI}]"
+                        },
+                        "lld_macro_paths": [
+                            {
+                                "lld_macro": "{#CTLID}",
+                                "path": "$.['Id']"
+                            },
+                            {
+                                "lld_macro": "{#MODEL}",
+                                "path": "$.['Model']"
+                            },
+                            {
+                                "lld_macro": "{#SN}",
+                                "path": "$.['SerialNumber']"
+                            }
+                        ],
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$[\"StorageControllers\"]"
+                                ]
+                            },
+                            {
+                                "type": "NOT_MATCHES_REGEX",
+                                "parameters": [
+                                    "null"
+                                ]
+                            },
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "{$DEFAULT_LLD_THROTTLING_HB_PERIOD}"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "15ffd06d5a1c4e109d0d0469f32a7f89",
+                        "name": "Logical disks discovery",
+                        "type": "DEPENDENT",
+                        "key": "lsi.ldlld",
+                        "delay": "0",
+                        "lifetime": "{$DEFAULT_KLR_PERIOD}",
+                        "item_prototypes": [
+                            {
+                                "uuid": "f89c1451893d42bfa99671ab2ac9e6da",
+                                "name": "Logical disk \"{#LDNAME}\" (id {#LDID})  state",
+                                "type": "DEPENDENT",
+                                "key": "lsi.ld.state.[\"{#LDID}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "TEXT",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['LogicalDisks'][?(@.['DGVD'] == '{#DGVD}')]['State'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.allinfo[{$LSI_CLI}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Logical disks"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "e5bdcaf88019498895e2aed4e608e453",
+                                        "expression": "find(/LSI_Perc_Lenovo agent 2 module/lsi.ld.state.[\"{#LDID}\"],,\"like\",\"Optimal\")=0",
+                                        "recovery_mode": "RECOVERY_EXPRESSION",
+                                        "recovery_expression": "find(/LSI_Perc_Lenovo agent 2 module/lsi.ld.state.[\"{#LDID}\"],,\"like\",\"Optimal\")=1",
+                                        "name": "LSI: logical disk \"{#LDNAME}\" (\"{#LDID}\") state is \"{ITEM.VALUE}\"",
+                                        "priority": "HIGH",
+                                        "tags": [
+                                            {
+                                                "tag": "LDLEVEL",
+                                                "value": "{#LDLEVEL}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI LD state"
+                                            },
+                                            {
+                                                "tag": "YT_CREATE_TICKET",
+                                                "value": "YES"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "lsi.allinfo[{$LSI_CLI}]"
+                        },
+                        "lld_macro_paths": [
+                            {
+                                "lld_macro": "{#CONTROLLER}",
+                                "path": "$.ControllerId"
+                            },
+                            {
+                                "lld_macro": "{#DGVD}",
+                                "path": "$.DGVD"
+                            },
+                            {
+                                "lld_macro": "{#LDID}",
+                                "path": "$.LdId"
+                            },
+                            {
+                                "lld_macro": "{#LDLEVEL}",
+                                "path": "$.Type"
+                            },
+                            {
+                                "lld_macro": "{#LDNAME}",
+                                "path": "$.Name"
+                            }
+                        ],
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$[\"LogicalDisks\"]"
+                                ]
+                            },
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "{$DEFAULT_LLD_THROTTLING_HB_PERIOD}"
+                                ]
+                            },
+                            {
+                                "type": "NOT_MATCHES_REGEX",
+                                "parameters": [
+                                    "null"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "a71d79295a9845d1916c23234eb3199f",
+                        "name": "Physical disks discovery from pd info",
+                        "type": "DEPENDENT",
+                        "key": "lsi.pdlld",
+                        "delay": "0",
+                        "lifetime": "{$DEFAULT_KLR_PERIOD}",
+                        "item_prototypes": [
+                            {
+                                "uuid": "c8144b822f7946e1b21859d40054201b",
+                                "name": "Physical disk \"{#SLOT}\" firmware",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.fw.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "CHAR",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['PhysicalDisks'][?(@.['Slot'] == '{#SLOT}')]['Firmware'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.pdsinfo[{$LSI_CLI}, {$LSI_PD_METHOD}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "efb5640eed154ab8aca25c87f44326ee",
+                                "name": "Physical disk \"{#SLOT}\" media error count",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.merrcount.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['PhysicalDisks'][?(@.['Slot'] == '{#SLOT}')]['MediaErrCount'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.pdsinfo[{$LSI_CLI}, {$LSI_PD_METHOD}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "9eea1ea5145e4b39bce2c2e067bd188a",
+                                        "expression": "last(/LSI_Perc_Lenovo agent 2 module/lsi.pd.merrcount.[\"{#SLOT}\"])>100",
+                                        "recovery_mode": "RECOVERY_EXPRESSION",
+                                        "recovery_expression": "last(/LSI_Perc_Lenovo agent 2 module/lsi.pd.merrcount.[\"{#SLOT}\"])=0",
+                                        "name": "LSI: physical disk \"{#SLOT}\" media error count is \"{ITEM.VALUE}\" (more than 100)",
+                                        "priority": "HIGH",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD state"
+                                            },
+                                            {
+                                                "tag": "YT_CREATE_TICKET",
+                                                "value": "YES"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "1423e734f9d54e22a7288a7df496c3a5",
+                                "name": "Physical disk \"{#SLOT}\" model",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.model.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "CHAR",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['PhysicalDisks'][?(@.['Slot'] == '{#SLOT}')]['Model'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.pdsinfo[{$LSI_CLI}, {$LSI_PD_METHOD}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "9afbfc19f4c44fc8ac8342c56bbbc0b7",
+                                "name": "Physical disk \"{#SLOT}\" other error count",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.otherrcount.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['PhysicalDisks'][?(@.['Slot'] == '{#SLOT}')]['OtherErrCount'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.pdsinfo[{$LSI_CLI}, {$LSI_PD_METHOD}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "48cc5262f86944b3959e57baf80b44b7",
+                                "name": "Physical disk \"{#SLOT}\" predictive failure count",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.predicterrcount.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['PhysicalDisks'][?(@.['Slot'] == '{#SLOT}')]['PredictErrCount'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.pdsinfo[{$LSI_CLI}, {$LSI_PD_METHOD}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "ba9195ff78334dc4988a8c4e81badb6f",
+                                        "expression": "last(/LSI_Perc_Lenovo agent 2 module/lsi.pd.predicterrcount.[\"{#SLOT}\"],#2)>0 and (last(/LSI_Perc_Lenovo agent 2 module/lsi.pd.predicterrcount.[\"{#SLOT}\"],#1)<>last(/LSI_Perc_Lenovo agent 2 module/lsi.pd.predicterrcount.[\"{#SLOT}\"],#2))=1",
+                                        "recovery_mode": "RECOVERY_EXPRESSION",
+                                        "recovery_expression": "last(/LSI_Perc_Lenovo agent 2 module/lsi.pd.predicterrcount.[\"{#SLOT}\"])=0",
+                                        "name": "LSI: physical disk \"{#SLOT}\" predictive failure count is \"{ITEM.VALUE}\". Growing up",
+                                        "priority": "HIGH",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD state"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "f60bdfe216ff4774bfb1c86f98dfdd4d",
+                                        "expression": "last(/LSI_Perc_Lenovo agent 2 module/lsi.pd.predicterrcount.[\"{#SLOT}\"])>0",
+                                        "name": "LSI: physical disk \"{#SLOT}\" predictive failure count is not null: \"{ITEM.LASTVALUE}\"",
+                                        "priority": "WARNING",
+                                        "tags": [
+                                            {
+                                                "tag": "MON_TAG_TEST",
+                                                "value": "YES"
+                                            },
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD state"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "3d0e3720a0e24aebbf0f76a8e0cd5cd7",
+                                "name": "Physical disk \"{#SLOT}\" size",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.size.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "CHAR",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['PhysicalDisks'][?(@.['Slot'] == '{#SLOT}')]['Size'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.pdsinfo[{$LSI_CLI}, {$LSI_PD_METHOD}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "e6cacd25c6084cd0af0196c967526c4c",
+                                "name": "Physical disk \"{#SLOT}\" smart flag",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.smartflag.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "CHAR",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['PhysicalDisks'][?(@.['Slot'] == '{#SLOT}')]['SmartFlag'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.pdsinfo[{$LSI_CLI}, {$LSI_PD_METHOD}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "b43ebacd6f14442b9209a77add845e69",
+                                        "expression": "find(/LSI_Perc_Lenovo agent 2 module/lsi.pd.smartflag.[\"{#SLOT}\"],,\"like\",\"Yes\")=1",
+                                        "name": "LSI: physical disk: SMART flag was raised up on \"{#SLOT}\"",
+                                        "priority": "HIGH",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD state"
+                                            },
+                                            {
+                                                "tag": "YT_CREATE_TICKET",
+                                                "value": "YES"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "ce0c7cc69a9f4fc09df9142f58935488",
+                                "name": "Physical disk \"{#SLOT}\" serial number",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.sn.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "CHAR",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['PhysicalDisks'][?(@.['Slot'] == '{#SLOT}')]['SerialNumber'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.pdsinfo[{$LSI_CLI}, {$LSI_PD_METHOD}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "e6e7996b1f0c4e4282e15cfcf3d2ca2a",
+                                        "expression": "(last(/LSI_Perc_Lenovo agent 2 module/lsi.pd.sn.[\"{#SLOT}\"],#1)<>last(/LSI_Perc_Lenovo agent 2 module/lsi.pd.sn.[\"{#SLOT}\"],#2))=1 and length(last(/LSI_Perc_Lenovo agent 2 module/lsi.pd.sn.[\"{#SLOT}\"]))>0",
+                                        "name": "LSI: physical disk \"{#SLOT}\" was replaced by sn  \"{ITEM.LASTVALUE}\"",
+                                        "event_name": "LSI: Physical disk \"{#SLOT}\" SN: {?last(/LSI_Perc_Lenovo agent2 module/lsi.pd.sn.[\"{#SLOT}\"],#2)} Model: {?last(/LSI_Perc_Lenovo agent2 module/lsi.pd.model.[\"{#SLOT}\"],#2)} was replaced by SN: SN: {?last(/LSI_Perc_Lenovo agent2 module/lsi.pd.sn.[\"{#SLOT}\"],#1)} Model: {?last(/LSI_Perc_Lenovo agent2 module/lsi.pd.model.[\"{#SLOT}\"],#1)}",
+                                        "priority": "INFO",
+                                        "tags": [
+                                            {
+                                                "tag": "MON_TAG_TEST",
+                                                "value": "YES"
+                                            },
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD state"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "da028d8f74a94cb0bf666a1bfb6da067",
+                                "name": "Physical disk \"{#SLOT}\" state",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.state.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "CHAR",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['PhysicalDisks'][?(@.['Slot'] == '{#SLOT}')]['State'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.pdsinfo[{$LSI_CLI}, {$LSI_PD_METHOD}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "341cf805d76843fbbef6e92777c79315",
+                                        "expression": "find(/LSI_Perc_Lenovo agent 2 module/lsi.pd.state.[\"{#SLOT}\"],,\"iregexp\",\"{$NODATA}\")=1 or find(/LSI_Perc_Lenovo agent 2 module/lsi.pd.state.[\"{#SLOT}\"],,\"iregexp\",\"{$MISSING}\")=1",
+                                        "name": "LSI: physical disk \"{#SLOT}\": no data",
+                                        "priority": "HIGH",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD state"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "983cbb5e24f04ba784385abf3b2dffb6",
+                                        "expression": "find(/LSI_Perc_Lenovo agent 2 module/lsi.pd.state.[\"{#SLOT}\"],,\"iregexp\",\"Unconfigured-Bad\")=1",
+                                        "name": "LSI: physical disk \"{#SLOT}\" is \"Unconfigured-Bad\"",
+                                        "priority": "HIGH",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD state"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "591ed2cd06f34912844e87a83a53abe3",
+                                        "expression": "find(/LSI_Perc_Lenovo agent 2 module/lsi.pd.state.[\"{#SLOT}\"],,\"iregexp\",\"{$LSI_PD_HIGH_SEVERITY_STATES}\")=1",
+                                        "name": "LSI: physical disk \"{#SLOT}\" is \"{ITEM.VALUE}\"",
+                                        "priority": "HIGH",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD state"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "1a37cca6bbb340bb8c4a70fa2549cdfe",
+                                        "expression": "find(/LSI_Perc_Lenovo agent 2 module/lsi.pd.state.[\"{#SLOT}\"],,\"iregexp\",\"Rebuild\")=1",
+                                        "name": "LSI: physical disk \"{#SLOT}\" state is \"{ITEM.VALUE}\"",
+                                        "priority": "INFO",
+                                        "tags": [
+                                            {
+                                                "tag": "MON_TAG_TEST",
+                                                "value": "YES"
+                                            },
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD state"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "05a5e1ddff6a432f9be96f6c99c79d23",
+                                        "expression": "find(/LSI_Perc_Lenovo agent 2 module/lsi.pd.state.[\"{#SLOT}\"],#1,\"like\",\"Unconfigured-Good\")=1 and find(/LSI_Perc_Lenovo agent 2 module/lsi.pd.state.[\"{#SLOT}\"],#2,\"like\",\"Optimal\")=1",
+                                        "name": "LSI: physical disk \"{#SLOT}\" state was changed from \"Optimal\" to \"Unconfigured-Good\"",
+                                        "priority": "WARNING",
+                                        "tags": [
+                                            {
+                                                "tag": "MON_TAG_TEST",
+                                                "value": "YES"
+                                            },
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD state"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "lsi.pdsinfo[{$LSI_CLI}, {$LSI_PD_METHOD}]"
+                        },
+                        "lld_macro_paths": [
+                            {
+                                "lld_macro": "{#CAPACITY}",
+                                "path": "$.['Size']"
+                            },
+                            {
+                                "lld_macro": "{#MODEL}",
+                                "path": "$.['Model']"
+                            },
+                            {
+                                "lld_macro": "{#PDINTERFACE}",
+                                "path": "$.['Interface']"
+                            },
+                            {
+                                "lld_macro": "{#PDSN}",
+                                "path": "$.['SerialNumber']"
+                            },
+                            {
+                                "lld_macro": "{#PDTYPE}",
+                                "path": "$.['Type']"
+                            },
+                            {
+                                "lld_macro": "{#SLOT}",
+                                "path": "$.['Slot']"
+                            }
+                        ],
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$[\"PhysicalDisks\"]"
+                                ]
+                            },
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "{$DEFAULT_LLD_THROTTLING_HB_PERIOD}"
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "uuid": "3884529c960c49f1b49fddac8240b7e4",
+                        "name": "Physical disks discovery from ctl info",
+                        "type": "DEPENDENT",
+                        "key": "lsi.pdlld.ctl",
+                        "delay": "0",
+                        "lifetime": "{$DEFAULT_KLR_PERIOD}",
+                        "item_prototypes": [
+                            {
+                                "uuid": "7f355f75c8e5476fb8c12fc812233b32",
+                                "name": "Physical disk \"{#SLOT}\" firmware",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.ctl.fw.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "CHAR",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['PhysicalDisks'][?(@.['Slot'] == '{#SLOT}')]['Firmware'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.allinfo[{$LSI_CLI}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "e7708a51526f495eba0559f330ac10cb",
+                                "name": "Physical disk \"{#SLOT}\" media error count",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.ctl.merrcount.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['PhysicalDisks'][?(@.['Slot'] == '{#SLOT}')]['MediaErrCount'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.allinfo[{$LSI_CLI}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "d8d3a3585f3142a3ace6aa6a264b311b",
+                                        "expression": "last(/LSI_Perc_Lenovo agent 2 module/lsi.pd.ctl.merrcount.[\"{#SLOT}\"])>100",
+                                        "recovery_mode": "RECOVERY_EXPRESSION",
+                                        "recovery_expression": "last(/LSI_Perc_Lenovo agent 2 module/lsi.pd.ctl.merrcount.[\"{#SLOT}\"])=0",
+                                        "name": "LSI: physical disk \"{#SLOT}\" media error count is \"{ITEM.VALUE}\" (more than 100)",
+                                        "priority": "HIGH",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD state"
+                                            },
+                                            {
+                                                "tag": "YT_CREATE_TICKET",
+                                                "value": "YES"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "2deac8e662b54d4d97c4da06c05bdb31",
+                                "name": "Physical disk \"{#SLOT}\" model",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.ctl.model.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "CHAR",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['PhysicalDisks'][?(@.['Slot'] == '{#SLOT}')]['Model'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.allinfo[{$LSI_CLI}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "609b4063909741a6b62a0f44387068e8",
+                                "name": "Physical disk \"{#SLOT}\" other error count",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.ctl.otherrcount.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['PhysicalDisks'][?(@.['Slot'] == '{#SLOT}')]['OtherErrCount'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.allinfo[{$LSI_CLI}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "c0bc50ead2754a61a94459ec4cdaf32c",
+                                "name": "Physical disk \"{#SLOT}\" predictive failure count",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.ctl.predicterrcount.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['PhysicalDisks'][?(@.['Slot'] == '{#SLOT}')]['PredictErrCount'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.allinfo[{$LSI_CLI}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "f133773c166f47d3a27cb006c86b7a1e",
+                                        "expression": "last(/LSI_Perc_Lenovo agent 2 module/lsi.pd.ctl.predicterrcount.[\"{#SLOT}\"],#2)>0 and (last(/LSI_Perc_Lenovo agent 2 module/lsi.pd.ctl.predicterrcount.[\"{#SLOT}\"],#1)<>last(/LSI_Perc_Lenovo agent 2 module/lsi.pd.ctl.predicterrcount.[\"{#SLOT}\"],#2))=1",
+                                        "recovery_mode": "RECOVERY_EXPRESSION",
+                                        "recovery_expression": "last(/LSI_Perc_Lenovo agent 2 module/lsi.pd.ctl.predicterrcount.[\"{#SLOT}\"])=0",
+                                        "name": "LSI: physical disk \"{#SLOT}\" predictive failure count is \"{ITEM.VALUE}\". Growing up",
+                                        "priority": "HIGH",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD state"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "4331ffb493c445c4b8479029f6a63725",
+                                        "expression": "last(/LSI_Perc_Lenovo agent 2 module/lsi.pd.ctl.predicterrcount.[\"{#SLOT}\"])>0",
+                                        "name": "LSI: physical disk \"{#SLOT}\" predictive failure count is not null: \"{ITEM.LASTVALUE}\"",
+                                        "priority": "WARNING",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD state"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "8e311d29d3dd4dbfbee1b6fd74562b49",
+                                "name": "Physical disk \"{#SLOT}\" size",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.ctl.size.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "CHAR",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['PhysicalDisks'][?(@.['Slot'] == '{#SLOT}')]['Size'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.allinfo[{$LSI_CLI}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "29dd1b3ac7dc46d28d0fd37b1427d8e9",
+                                "name": "Physical disk \"{#SLOT}\" smart flag",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.ctl.smartflag.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "CHAR",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['PhysicalDisks'][?(@.['Slot'] == '{#SLOT}')]['SmartFlag'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.allinfo[{$LSI_CLI}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "62d846ffcce94fc28baa01c367e43d80",
+                                        "expression": "find(/LSI_Perc_Lenovo agent 2 module/lsi.pd.ctl.smartflag.[\"{#SLOT}\"],,\"like\",\"Yes\")=1",
+                                        "name": "LSI: physical disk: SMART flag was raised up on \"{#SLOT}\"",
+                                        "priority": "HIGH",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD state"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "63b88590d84d4a2ea0dbf1dee19a3319",
+                                "name": "Physical disk \"{#SLOT}\" serial number",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.ctl.sn.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "CHAR",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['PhysicalDisks'][?(@.['Slot'] == '{#SLOT}')]['SerialNumber'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.allinfo[{$LSI_CLI}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "fe05f5a1653643a6821d3089c6db8885",
+                                        "expression": "(last(/LSI_Perc_Lenovo agent 2 module/lsi.pd.ctl.sn.[\"{#SLOT}\"],#1)<>last(/LSI_Perc_Lenovo agent 2 module/lsi.pd.ctl.sn.[\"{#SLOT}\"],#2))=1 and length(last(/LSI_Perc_Lenovo agent 2 module/lsi.pd.ctl.sn.[\"{#SLOT}\"]))>0",
+                                        "name": "LSI: physical disk \"{#SLOT}\" was replaced by sn  \"{ITEM.LASTVALUE}\"",
+                                        "priority": "INFO",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD state"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "e0e2e04ace714ba7838a1e8d4b8118f9",
+                                "name": "Physical disk \"{#SLOT}\" state",
+                                "type": "DEPENDENT",
+                                "key": "lsi.pd.ctl.state.[\"{#SLOT}\"]",
+                                "delay": "0",
+                                "history": "{$DEFAULT_HISTORY_PERIOD}",
+                                "trends": "0",
+                                "value_type": "CHAR",
+                                "preprocessing": [
+                                    {
+                                        "type": "JSONPATH",
+                                        "parameters": [
+                                            "$['PhysicalDisks'][?(@.['Slot'] == '{#SLOT}')]['State'].first()"
+                                        ]
+                                    },
+                                    {
+                                        "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                        "parameters": [
+                                            "{$DEFAULT_ITEM_THROTTLING_PERIOD}"
+                                        ]
+                                    }
+                                ],
+                                "master_item": {
+                                    "key": "lsi.allinfo[{$LSI_CLI}]"
+                                },
+                                "tags": [
+                                    {
+                                        "tag": "Application",
+                                        "value": "LSI Physical disks"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "b9e3185f92964e59b66c5d4e1856d55f",
+                                        "expression": "find(/LSI_Perc_Lenovo agent 2 module/lsi.pd.ctl.state.[\"{#SLOT}\"],,\"iregexp\",\"{$NODATA}\")=1 or find(/LSI_Perc_Lenovo agent 2 module/lsi.pd.ctl.state.[\"{#SLOT}\"],,\"iregexp\",\"{$MISSING}\")=1",
+                                        "name": "LSI: physical disk \"{#SLOT}\": no data",
+                                        "priority": "HIGH",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD state"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "28898da722464ae0bf80c24dc99e46a0",
+                                        "expression": "find(/LSI_Perc_Lenovo agent 2 module/lsi.pd.ctl.state.[\"{#SLOT}\"],,\"iregexp\",\"Unconfigured-Bad\")=1",
+                                        "name": "LSI: physical disk \"{#SLOT}\" is \"Unconfigured-Bad\"",
+                                        "priority": "HIGH",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD state"
+                                            },
+                                            {
+                                                "tag": "YT_CREATE_TICKET",
+                                                "value": "YES"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "77913ac416b84f01869dcaf4ec73cb29",
+                                        "expression": "find(/LSI_Perc_Lenovo agent 2 module/lsi.pd.ctl.state.[\"{#SLOT}\"],,\"iregexp\",\"{$LSI_PD_HIGH_SEVERITY_STATES}\")=1",
+                                        "name": "LSI: physical disk \"{#SLOT}\" is \"{ITEM.VALUE}\"",
+                                        "priority": "HIGH",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD state"
+                                            },
+                                            {
+                                                "tag": "YT_CREATE_TICKET",
+                                                "value": "YES"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "b20a48fcf58b41a4bb36cc4f3afedecb",
+                                        "expression": "find(/LSI_Perc_Lenovo agent 2 module/lsi.pd.ctl.state.[\"{#SLOT}\"],,\"iregexp\",\"Rebuild\")=1",
+                                        "name": "LSI: physical disk \"{#SLOT}\" state is \"{ITEM.VALUE}\"",
+                                        "priority": "INFO",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD state"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "8a07a604ed8e4983b409ab6581afe6c7",
+                                        "expression": "find(/LSI_Perc_Lenovo agent 2 module/lsi.pd.ctl.state.[\"{#SLOT}\"],#1,\"like\",\"Unconfigured-Good\")=1 and find(/LSI_Perc_Lenovo agent 2 module/lsi.pd.ctl.state.[\"{#SLOT}\"],#2,\"like\",\"Optimal\")=1",
+                                        "name": "LSI: physical disk \"{#SLOT}\" state was changed from \"Optimal\" to \"Unconfigured-Good\"",
+                                        "priority": "WARNING",
+                                        "tags": [
+                                            {
+                                                "tag": "PDSLOT",
+                                                "value": "{#SLOT}"
+                                            },
+                                            {
+                                                "tag": "PDSN",
+                                                "value": "{#PDSN}"
+                                            },
+                                            {
+                                                "tag": "PD_CAPACITY",
+                                                "value": "{#CAPACITY}"
+                                            },
+                                            {
+                                                "tag": "PD_MODEL",
+                                                "value": "{#MODEL}"
+                                            },
+                                            {
+                                                "tag": "PD_TYPE",
+                                                "value": "{#PDTYPE}"
+                                            },
+                                            {
+                                                "tag": "SOURCE",
+                                                "value": "LSI PD state"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ],
+                        "master_item": {
+                            "key": "lsi.allinfo[{$LSI_CLI}]"
+                        },
+                        "lld_macro_paths": [
+                            {
+                                "lld_macro": "{#CAPACITY}",
+                                "path": "$.['Size']"
+                            },
+                            {
+                                "lld_macro": "{#MODEL}",
+                                "path": "$.['Model']"
+                            },
+                            {
+                                "lld_macro": "{#PDINTERFACE}",
+                                "path": "$.['Interface']"
+                            },
+                            {
+                                "lld_macro": "{#PDSN}",
+                                "path": "$.['SerialNumber']"
+                            },
+                            {
+                                "lld_macro": "{#PDTYPE}",
+                                "path": "$.['Type']"
+                            },
+                            {
+                                "lld_macro": "{#SLOT}",
+                                "path": "$.['Slot']"
+                            }
+                        ],
+                        "preprocessing": [
+                            {
+                                "type": "JSONPATH",
+                                "parameters": [
+                                    "$[\"PhysicalDisks\"]"
+                                ]
+                            },
+                            {
+                                "type": "NOT_MATCHES_REGEX",
+                                "parameters": [
+                                    "null"
+                                ]
+                            },
+                            {
+                                "type": "DISCARD_UNCHANGED_HEARTBEAT",
+                                "parameters": [
+                                    "{$DEFAULT_LLD_THROTTLING_HB_PERIOD}"
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "APP",
+                        "value": "LSI (Perc) storage controller"
+                    },
+                    {
+                        "tag": "LSI_CLI",
+                        "value": "{$LSI_CLI}"
+                    }
+                ],
+                "macros": [
+                    {
+                        "macro": "{$LSI_BATTERY_EXISTS}",
+                        "value": "false"
+                    },
+                    {
+                        "macro": "{$LSI_BATTERY_METHOD}",
+                        "value": "stub"
+                    },
+                    {
+                        "macro": "{$LSI_BATTERY_REQUEST_PERIOD}",
+                        "value": "3h"
+                    },
+                    {
+                        "macro": "{$LSI_CLI}",
+                        "value": "storcli64"
+                    },
+                    {
+                        "macro": "{$LSI_CTL_OK_STATE}",
+                        "value": "Optimal|OK"
+                    },
+                    {
+                        "macro": "{$LSI_LD_RECOVERY_STATES}",
+                        "value": "Optimal|OK|Normal"
+                    },
+                    {
+                        "macro": "{$LSI_PD_ALLINFO_STORAGE_PERIOD}",
+                        "value": "2h"
+                    },
+                    {
+                        "macro": "{$LSI_PD_HIGH_SEVERITY_STATES}",
+                        "value": "Missing|Offline|Foreign|Failed|UBad"
+                    },
+                    {
+                        "macro": "{$LSI_PD_METHOD}",
+                        "value": "stub"
+                    },
+                    {
+                        "macro": "{$LSI_PD_REQUEST_PERIOD}",
+                        "value": "3h"
+                    },
+                    {
+                        "macro": "{$LSI_REQUEST_PERIOD}",
+                        "value": "10m"
+                    }
+                ]
+            }
+        ]
+    }
+}
