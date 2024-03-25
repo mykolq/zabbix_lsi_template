@@ -1,20 +1,17 @@
 # zabbix_lsi_template for agent 2 module
 ## Description
 
-This template is for discovering and monitoring LSI based (Avago, Broadcom, Perc, Lenovo) storage controllers by using json outputs of storcli64 and perccli64 tool.
-Now it works only with zabbix 5.2 and higher
+This template is for discovering and monitoring LSI based (Avago, Broadcom, Perc, Lenovo) storage controllers by using json outputs of storcli64 and perccli64 tool, preproccessed with agent 2 module.
+Now it works only with zabbix 6.4 and higher
 
 ## Main features
 
-* Discovery of controllers, logical discs, physical discs, batteries (bbu and cv) without scripts on agent side (it uses parsing of json
-and javascript preprocessing on zabbix server side)
+* Discovery of controllers, logical discs, physical discs, batteries (bbu and cv)
 * Monitoring controllers, logical, physical discs, batteries
 * Useful with OS, where storcli64 and perccli64 works
 * Overrides for reducing non supported items
 * Comfortable changing of time intervals by macroses.
-
-## Plans
-* In some cases we can get all data (without detailed information about batteries) in one command (/call show all j)
+* Can get info about controllers, logical discs, physical discs, batteries by one master metric (if it is possible)
 
 ## Installation
 
