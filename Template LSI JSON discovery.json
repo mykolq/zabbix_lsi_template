@@ -1738,8 +1738,54 @@
                 ],
                 "macros": [
                     {
+                        "macro": "{$ADAP_BATTERY_REQUEST_PERIOD}",
+                        "value": "1h",
+                        "description": "Battery request period"
+                    },
+                    {
+                        "macro": "{$ADAP_DISCOVERY_PERIOD}",
+                        "value": "1d"
+                    },
+                    {
+                        "macro": "{$ADAP_HISTORY_PERIOD}",
+                        "value": "30d"
+                    },
+                    {
+                        "macro": "{$ADAP_REQUEST_PERIOD}",
+                        "value": "1h"
+                    },
+                    {
+                        "macro": "{$ADAP_THROTTLING_HB_PERIOD}",
+                        "value": "5m"
+                    },
+                    {
+                        "macro": "{$DEFAULT_HISTORY_PERIOD}",
+                        "value": "30d"
+                    },
+                    {
+                        "macro": "{$DEFAULT_ITEM_THROTTLING_PERIOD}",
+                        "value": "5m",
+                        "description": "seems to be the hearbeat period for all discoverd items?"
+                    },
+                    {
                         "macro": "{$DEFAULT_KLR_PERIOD}",
                         "value": "6h"
+                    },
+                    {
+                        "macro": "{$DEFAULT_LLD_THROTTLING_HB_PERIOD}",
+                        "value": "1h"
+                    },
+                    {
+                        "macro": "{$DEFAULT_LLD_THROTTLING_PD_PERIOD}",
+                        "value": "1h"
+                    },
+                    {
+                        "macro": "{$LD_DISCOVERY_PERIOD}",
+                        "value": "6h"
+                    },
+                    {
+                        "macro": "{$LD_HISTORY_PERIOD}",
+                        "value": "30d"
                     },
                     {
                         "macro": "{$LD_KLR_PERIOD}",
@@ -1750,6 +1796,14 @@
                         "value": "Opt|OK"
                     },
                     {
+                        "macro": "{$LD_REQUEST_PERIOD}",
+                        "value": "5m"
+                    },
+                    {
+                        "macro": "{$LD_THROTTLING_HB_PERIOD}",
+                        "value": "5m"
+                    },
+                    {
                         "macro": "{$LSI_CLI}",
                         "value": "storcli64"
                     },
@@ -1758,12 +1812,24 @@
                         "value": "/call/eall/sall"
                     },
                     {
+                        "macro": "{$PD_DISCOVERY_PERIOD}",
+                        "value": "30m"
+                    },
+                    {
                         "macro": "{$PD_HIGH_SEVERITY_STATES}",
                         "value": "Missing|Offline|Foreign|Failed"
                     },
                     {
+                        "macro": "{$PD_HISTORY_PERIOD}",
+                        "value": "30d"
+                    },
+                    {
                         "macro": "{$PD_KLR_PERIOD}",
                         "value": "1d"
+                    },
+                    {
+                        "macro": "{$PD_REQUEST_PERIOD}",
+                        "value": "5m"
                     }
                 ]
             }
